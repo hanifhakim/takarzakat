@@ -1,0 +1,43 @@
+name: Harga cadangan mingguan
+
+# Memperbarui harga emas & perak cadangan di src/data/acuan.json (dipakai bila /api/harga gagal).
+# Push ke main memicu deploy Cloudflare Pages otomatis.
+on:
+  schedule:
+    - cron: '0 1 * * 1' # Senin 01:00 UTC = 08:00 WIB
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: harga-mingguan
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Ambil harga terbaru
+        run: npm run update:harga
+      - name: Uji & build dengan data baru
+        run: |
+          npm test
+          npm run build
+      - name: Commit bila berubah
+        run: |
+          if git diff --quiet -- src/data/acuan.json; then
+            echo "Tidak ada perubahan."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/acuan.json
+          git commit -m "chore(harga): perbarui harga cadangan $(date -u +%F)"
+          git push

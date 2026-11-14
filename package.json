@@ -9,7 +9,8 @@
     "check": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify:dalil": "node scripts/verify-dalil.mjs"
+    "verify:dalil": "node scripts/verify-dalil.mjs",
+    "update:harga": "node scripts/update-harga.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",

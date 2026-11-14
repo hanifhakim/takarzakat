@@ -30,10 +30,11 @@ docs/                   landasan hukum, benchmark, dan rencana
 
 ## Memperbarui angka
 
-Edit `src/data/acuan.json` (sertakan sumber + tanggal), lalu commit. Jadwal cek:
+**Harga emas & perak** di situs diambil live dari `/api/harga` (Pages Function: gold-api.com × kurs ECB, cache 1 jam). Angka di `src/data/acuan.json` adalah **cadangan** saat API gagal, dan diperbarui otomatis tiap Senin 08:00 WIB oleh workflow `Harga cadangan mingguan` (bisa dijalankan manual dari tab Actions, atau lokal: `npm run update:harga`). Workflow menolak lonjakan > 30% dan gagal bila sumber mati; GitHub akan mengirim email.
+
+Angka lain diedit manual (sertakan sumber + tanggal):
 - **Januari–Februari:** SK Ketua BAZNAS tentang nisab zakat pendapatan.
 - **Sebelum Ramadan:** SK Ketua BAZNAS tentang zakat fitrah.
-- **Bulanan:** harga emas & perak.
 
 ## Aturan konten
 
