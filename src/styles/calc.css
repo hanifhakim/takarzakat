@@ -25,7 +25,7 @@
 .inp input::placeholder { color: var(--faint); font-weight: 400; }
 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; background: var(--sunk); border-radius: 12px; padding: 4px; gap: 4px; }
 .seg button { border: 0; background: transparent; border-radius: 9px; padding: 10px 8px; min-height: 44px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--muted); line-height: 1.2; }
-.seg button small { display: block; font-weight: 500; font-size: 11.5px; opacity: .85; margin-top: 2px; }
+.seg button small { display: block; font-weight: 500; font-size: 12px; margin-top: 2px; }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
