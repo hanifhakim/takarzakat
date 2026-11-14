@@ -41,4 +41,6 @@ Teks Arab **tidak boleh diketik manual**. Ambil dari sumber (quran.com API / sun
 
 ## Deploy
 
-Cloudflare Pages, terhubung ke repo ini: build command `npm run build`, output `dist`, env `NODE_VERSION=22.22.0`.
+Cloudflare Pages (proyek `takarzakat`, terhubung ke repo ini): build command `npm run build`, output `dist`, env `NODE_VERSION=22.22.0`. Produksi: https://takarzakat.pages.dev (branch `main`); branch lain mendapat URL preview.
+
+`package-lock.json` harus memakai registry publik (`.npmrc` mengunci `registry.npmjs.org`). Mirror lokal VPS tidak terjangkau dari CI/Cloudflare.
