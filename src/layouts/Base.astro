@@ -6,13 +6,23 @@ import '@fontsource/plus-jakarta-sans/latin-700.css';
 import '@fontsource-variable/fraunces/wght.css';
 import '@fontsource/amiri/arabic-400.css';
 import '../styles/tokens.css';
+import fontSans from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2?url';
+import fontSerif from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import { SITUS } from '../data/situs';
 
 interface Props {
   title: string;
   description: string;
+  /** Objek JSON-LD tambahan (schema.org). */
+  jsonld?: Record<string, unknown>[];
+  /** Nama file di /og/ tanpa ekstensi. */
+  og?: string;
+  noindex?: boolean;
 }
-const { title, description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, jsonld = [], og = 'umum', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site);
+const ogImage = new URL(`/og/${og}.png`, Astro.site);
+const ld = jsonld.length ? JSON.stringify(jsonld.length === 1 ? jsonld[0] : jsonld).replace(/</g, '\\u003c') : '';
 ---
 <!doctype html>
 <html lang="id">
@@ -21,14 +31,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <link rel="preload" href={fontSans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
+    <meta property="og:site_name" content={SITUS.nama} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="id_ID" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#F6F2EA" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#121614" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-180.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    {ld && <script type="application/ld+json" set:html={ld} />}
     <script is:inline>
       // Pasang tema sebelum render supaya tidak berkedip.
       (function () {
@@ -41,16 +62,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </script>
   </head>
   <body>
+    <a class="skip" href="#main">Lewati ke konten</a>
     <div class="wrap">
       <header class="top">
         <a class="brand" href="/"><b>TakarZakat</b><span>kalkulator zakat</span></a>
         <button class="iconbtn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap">Gelap</button>
       </header>
-      <main id="main"><slot /></main>
+      <main id="main" tabindex="-1"><slot /></main>
       <footer class="foot">
-        <p>Alat bantu hitung, bukan fatwa. Semua perhitungan terjadi di perangkatmu; tidak ada data yang dikirim.</p>
+        <nav aria-label="Tautan situs">
+          <a href="/">Semua jenis zakat</a>
+          <a href="/metodologi">Cara kerja &amp; sumber</a>
+          <a href="/metodologi#lapor" data-mail={`${SITUS.email.user}|${SITUS.email.domain}`}>Lapor kesalahan</a>
+        </nav>
+        <p>Alat bantu hitung, bukan fatwa. Semua perhitungan terjadi di perangkatmu; angka yang kamu isi tidak pernah dikirim.</p>
       </footer>
     </div>
+    {SITUS.analytics && (
+      <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: SITUS.analytics })}></script>
+    )}
     <script>
       const btn = document.getElementById('themeBtn')!;
       const label = () => (btn.textContent = document.documentElement.dataset.theme === 'dark' ? 'Terang' : 'Gelap');
@@ -61,6 +91,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         try { localStorage.setItem('takar.theme', t); } catch {}
         label();
       });
+      // Email dirakit di browser (tidak tertulis utuh di HTML).
+      document.querySelectorAll<HTMLAnchorElement>('[data-mail]').forEach((a) => {
+        const [u, d] = a.dataset.mail!.split('|');
+        a.href = `mailto:${u}@${d}?subject=${encodeURIComponent('TakarZakat: lapor kesalahan')}&body=${encodeURIComponent(`Halaman: ${location.href}\n\n`)}`;
+        if (a.dataset.mailText !== undefined) a.textContent = `${u}@${d}`;
+      });
+      // Offline: service worker hanya di produksi (bukan dev server).
+      if ('serviceWorker' in navigator && import.meta.env.PROD) {
+        addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      }
     </script>
   </body>
 </html>
@@ -74,4 +114,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   .iconbtn:hover { border-color: var(--line-strong); color: var(--ink); }
   .foot { border-top: 1px solid var(--line); margin-top: 48px; padding: 20px 0 40px; font-size: 13px; color: var(--faint); }
   .foot p { margin: 0; max-width: 60ch; }
+  .foot nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-bottom: 10px; }
+  .foot nav a { color: var(--muted); min-height: 44px; display: inline-flex; align-items: center; }
+  .foot nav a:hover { color: var(--ink); }
 </style>

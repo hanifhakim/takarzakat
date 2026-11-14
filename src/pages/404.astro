@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { JENIS } from '../lib/jenis';
+---
+<Base title="Halaman tidak ditemukan — TakarZakat" description="Halaman yang kamu cari tidak ada." noindex>
+  <section class="nf">
+    <h1>Halaman tidak ditemukan</h1>
+    <p>Mungkin alamatnya salah ketik atau sudah dipindah. Pilih kalkulator yang kamu cari:</p>
+    <ul>{JENIS.map((j) => <li><a href={`/${j.slug}`}>{j.judul}</a></li>)}</ul>
+  </section>
+</Base>
+
+<style>
+  .nf { padding: 24px 0; max-width: 560px; }
+  h1 { font: 500 34px/1.1 var(--f-serif); margin: 0 0 12px; }
+  p { color: var(--muted); }
+  ul { padding-left: 20px; }
+  li { margin: 0; }
+  li a { display: inline-flex; min-height: 44px; align-items: center; }
+</style>

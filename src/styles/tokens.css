@@ -1,7 +1,7 @@
 /* Design token TakarZakat — diambil dari mockup (zakat-web/mockup). */
 :root {
   --paper: #F6F2EA; --surface: #FFFDF8; --sunk: #EFE9DE;
-  --ink: #1B2420; --muted: #5B655F; --faint: #8A928C;
+  --ink: #1B2420; --muted: #5B655F; --faint: #687069;
   --line: #E2DACB; --line-strong: #CFC5B3;
   --accent: #1E6A4F; --accent-ink: #FFFFFF; --accent-soft: #E2EEE7; --accent-text: #17573F;
   --gold: #A8741F; --gold-soft: #F5E9D3; --warn-text: #8A4A17;
@@ -14,7 +14,7 @@
 }
 [data-theme="dark"] {
   --paper: #121614; --surface: #1A201D; --sunk: #151A18;
-  --ink: #ECE8DF; --muted: #A3ACA6; --faint: #7C857F;
+  --ink: #ECE8DF; --muted: #A3ACA6; --faint: #858E88;
   --line: #2A322E; --line-strong: #3A443F;
   --accent: #5DBB8F; --accent-ink: #0E1A14; --accent-soft: #1D3328; --accent-text: #8ED3B0;
   --gold: #D9A653; --gold-soft: #2E2618; --warn-text: #E3A673;
@@ -33,5 +33,7 @@ button { font: inherit; color: inherit; }
 :focus-visible { outline: 3px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: 2px; border-radius: 8px; }
 .num { font-variant-numeric: tabular-nums; }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 20; background: var(--accent); color: var(--accent-ink); padding: 10px 14px; border-radius: 10px; font-weight: 700; text-decoration: none; }
+.skip:focus { top: 12px; }
 .ar { font: 400 23px/1.9 var(--f-arab); direction: rtl; text-align: right; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

@@ -45,6 +45,7 @@ export function pasang<S extends object>(o: Opsi<S>): void {
   const hasil = $('#hasil')!;
   const dock = $('#dock')!;
   let acuan = muat();
+  form.addEventListener('submit', (e) => e.preventDefault());
 
   const q = new URLSearchParams(location.search);
   for (const k of Object.keys(awal)) {
@@ -74,6 +75,15 @@ export function pasang<S extends object>(o: Opsi<S>): void {
     o.setelah?.(st as unknown as S, form);
   }
 
+  // Pembaca layar: satu kalimat ringkas, diumumkan setelah pengguna berhenti mengetik.
+  const umum = $('#hasil-umum');
+  let tUmum: ReturnType<typeof setTimeout> | undefined;
+  let terakhir = '';
+  const umumkan = (t: string) => {
+    clearTimeout(tUmum);
+    tUmum = setTimeout(() => { if (umum && t !== terakhir) { umum.textContent = t; terakhir = t; } }, 700);
+  };
+
   let dockAktif = false;
   let hasilTerlihat = false;
   const aturDock = () => dock.classList.toggle('hide', !dockAktif || hasilTerlihat);
@@ -86,6 +96,7 @@ export function pasang<S extends object>(o: Opsi<S>): void {
     $('#dockLbl')!.textContent = `${ring.status} · ${ring.per}`;
     dockAktif = !ring.kosong;
     aturDock();
+    if (!ring.kosong) umumkan(`${ring.status}: ${ring.angka}, ${ring.per}.`);
   }
 
   // Input angka.
@@ -143,6 +154,8 @@ export function pasang<S extends object>(o: Opsi<S>): void {
   const tgl = $('#acuanTgl');
   const label = () => { if (tgl) tgl.textContent = labelHarga(acuan); };
   window.addEventListener('takar:acuan', () => { acuan = muat(); label(); perbarui(); });
+  window.addEventListener('online', () => { label(); segarkanHarga(); });
+  window.addEventListener('offline', label);
   label();
   segarkanHarga();
 

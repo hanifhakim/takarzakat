@@ -1,0 +1,164 @@
+---
+import Base from '../layouts/Base.astro';
+import raw from '../data/acuan.json';
+import dalil from '../data/dalil.json';
+import { SITUS } from '../data/situs';
+import { JENIS } from '../lib/jenis';
+import { ACUAN, NISAB_EMAS_G, NISAB_GABAH_KG, NISAB_PERAK_G, rupiah } from '../lib/zakat';
+
+const fmt = (d: string) => new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const tglDalil = fmt(dalil.diverifikasi);
+const lemah = Object.values(dalil.jenis).flatMap((j) => j.dalil).filter((d) => 'lemah' in d && d.lemah);
+
+const ACU = [
+  { n: 'Harga emas 24K dunia', v: `${rupiah(raw.emas24.nilai)}/g`, s: 'Live dari gold-api.com × kurs ECB; angka ini cadangan', t: raw.emas24.tanggal, url: raw.emas24.url },
+  { n: 'Harga perak dunia', v: `${rupiah(raw.perak.nilai)}/g`, s: 'Live dari gold-api.com × kurs ECB; angka ini cadangan', t: raw.perak.tanggal, url: raw.perak.url },
+  { n: 'Nisab penghasilan BAZNAS', v: `${rupiah(raw.nisabPenghasilanBaznas.bulan)}/bulan`, s: raw.nisabPenghasilanBaznas.dasar, t: String(raw.nisabPenghasilanBaznas.berlaku), url: raw.nisabPenghasilanBaznas.url },
+  { n: 'Zakat fitrah BAZNAS', v: `${rupiah(raw.fitrahBaznas.nilai)}/jiwa`, s: raw.fitrahBaznas.dasar, t: String(raw.fitrahBaznas.berlaku), url: raw.fitrahBaznas.url },
+  { n: 'Harga gabah', v: `${rupiah(raw.gabahKg.nilai)}/kg`, s: raw.gabahKg.sumber, t: '2026' },
+  { n: 'Harga beras', v: `${rupiah(raw.berasKg.nilai)}/kg`, s: raw.berasKg.catatan, t: '2026' },
+];
+
+const RUMUS = [
+  { j: 'penghasilan', bawaan: `BAZNAS: penghasilan kotor ≥ ${rupiah(ACUAN.nisabPenghasilanBulanBaznas)}/bulan → 2,5%.`,
+    lain: `Penghasilan bersih (MUI 2018, Muhammadiyah): setelah kebutuhan pokok dan cicilan, dibandingkan 85 g emas 24K.`,
+    alasan: 'Ketentuan resmi lembaga zakat nasional dan yang paling banyak dipakai.' },
+  { j: 'simpanan', bawaan: `Uang + emas + perak + investasi + piutang − utang jatuh tempo ≥ ${NISAB_EMAS_G} g emas, setelah satu tahun hijriah → 2,5%.`,
+    lain: `Nisab perak ${NISAB_PERAK_G} g. Perhiasan yang dipakai bisa disertakan (Hanafi).`,
+    alasan: 'PMA 52/2014 Pasal 7 dan 10 menggabungkan harta simpanan terhadap nisab emas. Perhiasan dipakai tidak dihitung, mengikuti mayoritas mazhab.' },
+  { j: 'perdagangan', bawaan: `Kas + piutang lancar + stok (harga pasar) − utang jangka pendek ≥ ${NISAB_EMAS_G} g emas, setelah satu tahun → 2,5%.`,
+    lain: 'Tidak ada pilihan lain di kalkulator.', alasan: 'PMA 52/2014 Pasal 11–13.' },
+  { j: 'pertanian', bawaan: `Panen ≥ ${NISAB_GABAH_KG} kg gabah → 10% (tadah hujan) atau 5% (irigasi berbiaya), tiap panen.`,
+    lain: `Tanaman selain padi dinilai dengan uang terhadap nilai ${NISAB_GABAH_KG} kg gabah.`, alasan: 'HR Bukhari 1483 dan PMA 52/2014 Pasal 14–15.' },
+  { j: 'fitrah', bawaan: `Jiwa × 2,5 kg beras, atau ${rupiah(ACUAN.fitrahBaznas)}/jiwa bila dengan uang.`,
+    lain: 'Takaran 2,75 kg (kehati-hatian, LBM PBNU), atau uang sesuai harga beras setempat.', alasan: 'PMA 52/2014 Pasal 30–31 dan SK Ketua BAZNAS 14/2026.' },
+];
+const nama = (id: string) => JENIS.find((x) => x.id === id)!;
+---
+<Base
+  title="Cara kerja & sumber — TakarZakat"
+  description="Dari mana angka TakarZakat berasal: nisab, harga emas, rumus tiap jenis zakat, dalil yang sudah dan belum diverifikasi, serta cara melaporkan kesalahan."
+>
+  <article class="prose">
+    <a class="back" href="/">← Semua jenis zakat</a>
+    <h1>Cara kerja &amp; sumber</h1>
+    <p class="lede">TakarZakat adalah alat bantu hitung, bukan fatwa. Halaman ini menjelaskan dari mana setiap angka berasal, pendapat mana yang dipakai sebagai bawaan, dan apa yang belum bisa kami pastikan.</p>
+
+    <nav class="toc" aria-label="Isi halaman">
+      <a href="#acuan">Angka acuan</a><a href="#emas">Harga emas</a><a href="#rumus">Rumus</a>
+      <a href="#dalil">Dalil</a><a href="#belum">Belum terverifikasi</a><a href="#privasi">Privasi</a><a href="#lapor">Lapor kesalahan</a>
+    </nav>
+
+    <section id="review" class="note" aria-label="Status review">
+      {SITUS.review
+        ? <p><b>Sudah direview</b> oleh {SITUS.review.oleh} ({fmt(SITUS.review.tanggal)}).</p>
+        : <p><b>Belum direview ustadz atau amil.</b> Isi disusun dari sumber primer yang tercantum di bawah. Untuk keputusan penting, tanyakan juga kepada ulama atau lembaga zakat tempatmu berzakat.</p>}
+    </section>
+
+    <section id="acuan">
+      <h2>Angka acuan</h2>
+      <p>Semua angka yang bisa berubah disimpan di satu berkas data (<code>acuan.json</code>), terakhir diperbarui {fmt(raw.diperbarui)}. Kamu juga bisa mengganti harga emas, perak, beras, dan gabah lewat tombol <i>ubah</i> di setiap kalkulator; ubahan itu hanya tersimpan di perangkatmu.</p>
+      <div class="tbl" role="region" aria-label="Tabel angka acuan" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Acuan</th><th scope="col">Nilai</th><th scope="col">Sumber</th></tr></thead>
+          <tbody>
+            {ACU.map((a) => (
+              <tr><th scope="row">{a.n}</th><td class="num">{a.v}</td><td>{a.url ? <a href={a.url} rel="noopener">{a.s}</a> : a.s} <span class="t">({a.t})</span></td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>Takaran tetap: nisab emas {NISAB_EMAS_G} g, perak {NISAB_PERAK_G} g, gabah {NISAB_GABAH_KG} kg; kadar 2,5% untuk harta simpanan, penghasilan, dan perdagangan.</p>
+    </section>
+
+    <section id="emas">
+      <h2>Harga emas</h2>
+      <p>Kalkulator memakai <b>harga emas dunia (spot) 24 karat</b>: harga per troy ons dari gold-api.com dikalikan kurs rupiah dari Bank Sentral Eropa (lewat Frankfurter), lalu dibagi 31,1035 gram. Harga diambil saat halaman dibuka, disimpan sementara selama satu jam di server dan 30 menit di peramban.</p>
+      <p>Bila sumber itu gagal atau kamu sedang offline, kalkulator memakai harga terakhir yang tersimpan, lalu angka cadangan yang diperbarui otomatis setiap Senin. Label di bawah hasil selalu menyebut harga mana yang sedang dipakai.</p>
+      <p><b>Kenapa bukan harga Antam?</b> Harga jual emas batangan ritel sudah termasuk premi toko ({rupiah(raw.emasAntam.nilai)}/g pada {fmt(raw.emasAntam.tanggal)}, sekitar {Math.round((raw.emasAntam.nilai / raw.emas24.nilai - 1) * 100)}% di atas harga dunia). Harga dunia lebih dekat ke nilai emas itu sendiri dan bisa diambil otomatis. Kalau lebih yakin memakai harga Antam, ganti lewat tombol <i>ubah</i>.</p>
+      <p>Nisab penghasilan BAZNAS tidak ikut harga harian; angkanya tetap mengikuti SK yang berlaku satu tahun.</p>
+    </section>
+
+    <section id="rumus">
+      <h2>Rumus dan pilihan bawaan</h2>
+      {RUMUS.map((r) => (
+        <div class="rumus">
+          <h3><a href={`/${nama(r.j).slug}`}>{nama(r.j).judul}</a></h3>
+          <dl>
+            <dt>Bawaan</dt><dd>{r.bawaan}</dd>
+            <dt>Pilihan lain</dt><dd>{r.lain}</dd>
+            <dt>Alasan</dt><dd>{r.alasan}</dd>
+          </dl>
+        </div>
+      ))}
+      <p>Semua hasil dibulatkan ke rupiah terdekat. Rumus terbuka dan diuji otomatis di <a href={SITUS.repo} rel="noopener">repositori kode</a>.</p>
+    </section>
+
+    <section id="dalil">
+      <h2>Dalil</h2>
+      <p>Teks Arab ayat diambil langsung dari quran.com (mushaf Utsmani, terjemahan Kemenag) dan teks hadis dari sunnah.com, tidak diketik ulang. Setiap rujukan dicocokkan ulang secara otomatis dengan sumbernya; pengecekan terakhir {tglDalil}.</p>
+      <p>Derajat hadis ditampilkan apa adanya. Hadis yang dinilai lemah tetap ditampilkan karena sering dikutip, dengan tanda jelas:</p>
+      <ul>{lemah.map((d) => <li><a href={d.url} rel="noopener">{d.rujukan}</a>: {'derajat' in d ? d.derajat : 'lemah'}</li>)}</ul>
+      <p>Regulasi yang dibaca dari dokumen aslinya: PMA 52/2014, SK Ketua BAZNAS 14/2026 dan 15/2026, Kajian Nisab BAZNAS 2026, dan Himpunan Fatwa Zakat MUI 1976–2021.</p>
+    </section>
+
+    <section id="belum">
+      <h2>Belum terverifikasi</h2>
+      <p>Hal-hal berikut belum bisa kami pastikan dari sumber primer, jadi <b>tidak dipakai</b> sebagai fitur kalkulator:</p>
+      <ul>
+        <li>Kadar 7,5% untuk pengairan campuran, dan apakah biaya produksi pertanian boleh dikurangkan.</li>
+        <li>Rincian jenis utang yang boleh dikurangkan (misalnya cicilan KPR jangka panjang). Kalkulator hanya mengurangkan utang yang jatuh tempo dalam 12 bulan.</li>
+        <li>Teks PMA 31/2019 dari dokumen aslinya; isinya hanya dikutip melalui SK dan kajian BAZNAS.</li>
+        <li>Kaitan QS Al-A'la [87:14] dengan zakat fitrah, dan atsar sahabat tentang zakat perdagangan.</li>
+      </ul>
+    </section>
+
+    <section id="privasi">
+      <h2>Privasi</h2>
+      <ul>
+        <li>Semua perhitungan terjadi di peramban. Angka yang kamu isi tidak pernah dikirim ke server mana pun.</li>
+        <li>Satu-satunya permintaan data adalah harga emas dan perak (<code>/api/harga</code>), tanpa informasi tentang kamu.</li>
+        <li>Ubahan harga dan pilihan tema disimpan di perangkatmu (localStorage). Hapus data situs di peramban untuk menghapusnya.</li>
+        <li>Kunjungan halaman dihitung dengan Cloudflare Web Analytics: tanpa cookie, tanpa sidik jari perangkat, dan tanpa isian kalkulator.</li>
+        <li>Tidak ada iklan, akun, atau ajakan donasi. TakarZakat tidak berafiliasi dengan lembaga zakat mana pun.</li>
+      </ul>
+    </section>
+
+    <section id="lapor">
+      <h2>Lapor kesalahan</h2>
+      <p>Menemukan angka, dalil, atau penjelasan yang keliru? Kirim email ke <a data-mail={`${SITUS.email.user}|${SITUS.email.domain}`} data-mail-text href="#lapor">{SITUS.email.user} [at] {SITUS.email.domain}</a>. Sertakan halaman, angka yang kamu isi, dan sumber pembandingnya bila ada.</p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .prose { max-width: 720px; padding: 12px 0 8px; }
+  .back { display: inline-flex; min-height: 44px; align-items: center; color: var(--muted); text-decoration: none; font-size: 14px; }
+  h1 { font: 500 clamp(30px, 7vw, 42px)/1.1 var(--f-serif); letter-spacing: -.02em; margin: 4px 0 12px; }
+  .lede { color: var(--muted); font-size: 17px; margin: 0 0 18px; }
+  h2 { font: 600 22px/1.25 var(--f-serif); margin: 36px 0 10px; scroll-margin-top: 16px; }
+  h3 { font-size: 16px; margin: 0 0 6px; }
+  section { scroll-margin-top: 16px; }
+  p, li { line-height: 1.65; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  code { font-size: .9em; background: var(--sunk); padding: 1px 5px; border-radius: 5px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .toc a { font-size: 14px; padding: 8px 12px; min-height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; color: var(--ink); background: var(--surface); }
+  .toc a:hover { border-color: var(--line-strong); }
+  .note { background: var(--gold-soft); color: var(--warn-text); border-radius: var(--radius-sm); padding: 2px 16px; }
+  .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child > * { border-bottom: 0; }
+  thead th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  tbody th { font-weight: 600; }
+  td.num { white-space: nowrap; font-weight: 600; }
+  .t { color: var(--muted); white-space: nowrap; }
+  .rumus { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 10px; }
+  .rumus h3 a { color: var(--ink); }
+  .rumus dl { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 12px; margin: 0; font-size: 15px; }
+  .rumus dt { color: var(--muted); }
+  .rumus dd { margin: 0; }
+  @media (max-width: 480px) { .rumus dl { grid-template-columns: 1fr; } .rumus dd { margin-bottom: 6px; } }
+</style>

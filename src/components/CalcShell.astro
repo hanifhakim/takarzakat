@@ -6,6 +6,9 @@
 import Base from '../layouts/Base.astro';
 import Dalil from './Dalil.astro';
 import Dialogs from './Dialogs.astro';
+import Faq from './Faq.astro';
+import { FAQ } from '../data/faq';
+import { SITUS } from '../data/situs';
 import type { Jenis } from '../lib/jenis';
 import { ACUAN } from '../lib/zakat';
 import '../styles/calc.css';
@@ -17,9 +20,29 @@ interface Props {
   awal: string; // HTML hasil awal (keadaan kosong) dari view builder
 }
 const { j, title, description, awal } = Astro.props;
+const faq = FAQ[j.id];
+const url = `${SITUS.url}/${j.slug}`;
+const jsonld = [
+  {
+    '@context': 'https://schema.org', '@type': 'WebApplication', name: `Kalkulator ${j.judul.toLowerCase()} · ${SITUS.nama}`,
+    url, description, applicationCategory: 'FinanceApplication', operatingSystem: 'Any', inLanguage: 'id',
+    isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: SITUS.nama, item: `${SITUS.url}/` },
+      { '@type': 'ListItem', position: 2, name: j.judul, item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faq.map((t) => ({ '@type': 'Question', name: t.q, acceptedAnswer: { '@type': 'Answer', text: t.a } })),
+  },
+];
 const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 ---
-<Base title={title} description={description}>
+<Base title={title} description={description} jsonld={jsonld} og={j.slug}>
   <section class="calc" data-calc={j.id}>
     <div class="head">
       <a class="back" href="/">
@@ -29,19 +52,20 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
       <p class="intro">{j.intro}</p>
     </div>
 
-    <form class="panel" id="form" novalidate onsubmit="return false">
+    <form class="panel" id="form" novalidate aria-label={`Isian ${j.judul.toLowerCase()}`}>
       <slot />
     </form>
 
     <section class="result" id="hasil" tabindex="-1" aria-labelledby="hasil-h">
       <h2 id="hasil-h" class="sr-only">Hasil perhitungan</h2>
-      <div id="hasil-isi" aria-live="polite" set:html={awal} />
+      <p id="hasil-umum" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+      <div id="hasil-isi" set:html={awal} />
       <div class="r-actions">
         <button class="btn" type="button" id="copyBtn">Salin rincian</button>
         <button class="btn primary" type="button" data-open="dlgLembaga">Tunaikan</button>
       </div>
       <p class="disclaimer">
-        Alat bantu hitung, bukan fatwa. Harga emas: <span id="acuanTgl">bawaan {tgl}</span> ·
+        Alat bantu hitung, bukan fatwa (<a href="/metodologi">cara kerja</a>). Harga emas: <span id="acuanTgl">bawaan {tgl}</span> ·
         <button class="linkbtn" type="button" data-open="dlgAcuan">ubah</button>
       </p>
     </section>
@@ -49,6 +73,7 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
     <div class="info">
       <slot name="info" />
       <Dalil id={j.id} />
+      <Faq items={faq} />
     </div>
   </section>
 

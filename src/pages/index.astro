@@ -2,18 +2,25 @@
 import Base from '../layouts/Base.astro';
 import { JENIS } from '../lib/jenis';
 import { ACUAN, NISAB_EMAS_G, rupiah } from '../lib/zakat';
+import { SITUS } from '../data/situs';
 
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'WebSite', name: SITUS.nama, url: `${SITUS.url}/`, inLanguage: 'id',
+  description: 'Kalkulator zakat penghasilan, simpanan & emas, perdagangan, pertanian, dan fitrah, lengkap dengan dalil.',
+}];
 const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 ---
 <Base
   title="TakarZakat — Kalkulator Zakat Penghasilan, Emas, Fitrah 2026"
   description="Hitung zakat penghasilan, simpanan & emas, perdagangan, pertanian, dan fitrah. Lengkap dengan dalil dan perbedaan pendapat. Privat, dihitung di perangkatmu."
+  jsonld={jsonld}
 >
   <section class="home">
     <div class="left">
       <h1>Hitung zakatmu, lengkap dengan dasarnya.</h1>
       <p class="lede">Rumus terbuka, dalil dan perbedaan pendapat ditampilkan apa adanya. Kamu yang memutuskan.</p>
       <span class="privacy"><i></i>Privat: semua dihitung di perangkatmu</span>
+      <p class="how"><a href="/metodologi">Cara kerja &amp; sumber angka →</a></p>
     </div>
     <div class="right">
       <ul class="kinds">
@@ -51,6 +58,8 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
     document.getElementById('hSumber')!.textContent = labelHarga(a);
   }
   window.addEventListener('takar:acuan', tampil);
+  window.addEventListener('online', () => { tampil(); segarkanHarga(); });
+  window.addEventListener('offline', tampil);
   tampil();
   segarkanHarga();
 </script>
@@ -60,6 +69,8 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
   h1 { font: 500 clamp(30px, 7.4vw, 46px)/1.08 var(--f-serif); letter-spacing: -.02em; margin: 6px 0 12px; text-wrap: balance; }
   .lede { color: var(--muted); margin: 0; max-width: 34ch; text-wrap: pretty; }
   .privacy { display: inline-flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 13px; color: var(--accent-text); background: var(--accent-soft); padding: 6px 12px; border-radius: 999px; }
+  .how { margin: 14px 0 0; font-size: 14px; }
+  .how a { color: var(--accent-text); display: inline-flex; min-height: 44px; align-items: center; }
   .privacy i { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
   .kinds { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .kinds li { border-bottom: 1px solid var(--line); }

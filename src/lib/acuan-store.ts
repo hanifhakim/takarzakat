@@ -40,8 +40,12 @@ export function gabung(ubahan: unknown, bawaan: Acuan = ACUAN, live?: HargaLive 
 }
 
 /** Label singkat sumber harga untuk UI. */
-export function labelHarga(a: AcuanAktif, sekarang = Date.now()): string {
+export function labelHarga(a: AcuanAktif, sekarang = Date.now(), online = typeof navigator === 'undefined' || navigator.onLine !== false): string {
   if (a.sumberHarga === 'manual') return 'diubah manual';
+  if (!online) {
+    if (a.sumberHarga === 'live' && a.waktuHarga) return `offline · harga tersimpan ${labelHarga(a, sekarang, true).split(' · ')[1]}`;
+    return `offline · ${labelHarga(a, sekarang, true)}`;
+  }
   if (a.sumberHarga === 'live' && a.waktuHarga) {
     const menit = Math.max(0, Math.round((sekarang - Date.parse(a.waktuHarga)) / 60000));
     const kapan = menit < 1 ? 'baru saja' : menit < 60 ? `${menit} menit lalu` : `${Math.round(menit / 60)} jam lalu`;
