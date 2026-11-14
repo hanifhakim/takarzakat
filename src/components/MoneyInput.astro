@@ -7,8 +7,9 @@ interface Props {
   suffix?: string;
   decimal?: boolean;
   perLabel?: boolean;
+  placeholder?: string;
 }
-const { name, label, hint, suffix, decimal = false, perLabel = false } = Astro.props;
+const { name, label, hint, suffix, decimal = false, perLabel = false, placeholder = '0' } = Astro.props;
 const id = `f-${name}`;
 ---
 <div class="field">
@@ -23,7 +24,7 @@ const id = `f-${name}`;
       data-mode={decimal ? 'dec' : 'int'}
       inputmode={decimal ? 'decimal' : 'numeric'}
       autocomplete="off"
-      placeholder="0"
+      placeholder={placeholder}
       aria-describedby={hint ? `${id}-h` : undefined}
     />
     {suffix && <span class="suf">{suffix}</span>}

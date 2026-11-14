@@ -6,15 +6,17 @@ interface Props {
   opsi: Opsi[];
   nilai: string;
   hint?: string;
+  /** Tipe nilai di state: str (bawaan), bool ('ya'/'belum'), num. */
+  tipe?: 'str' | 'bool' | 'num';
 }
-const { name, legend, opsi, nilai, hint } = Astro.props;
+const { name, legend, opsi, nilai, hint, tipe = 'str' } = Astro.props;
 ---
 <div class="field">
   <span class="legend" id={`l-${name}`}>{legend}</span>
   {hint && <p class="hint">{hint}</p>}
   <div class="seg" role="group" aria-labelledby={`l-${name}`}>
     {opsi.map((o) => (
-      <button type="button" data-seg={name} data-v={o.v} aria-pressed={o.v === nilai ? "true" : "false"}>
+      <button type="button" data-seg={name} data-v={o.v} data-t={tipe} aria-pressed={o.v === nilai ? "true" : "false"}>
         {o.label}{o.sub && <small>{o.sub}</small>}
       </button>
     ))}

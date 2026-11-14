@@ -26,7 +26,7 @@ describe('renderHasil penghasilan', () => {
     expect(html).toContain('Rp250.000');
     expect(html).toContain('2,5% × Rp10.000.000 = Rp250.000');
     expect(html).toContain('dua metode memberi jawaban berbeda');
-    expect(html).toContain('data-cmp="baznas" aria-pressed="true"');
+    expect(html).toContain('data-set="metode:baznas" aria-pressed="true"');
   });
   it('di bawah nisab: belum wajib, nominal Rp0, ada ajakan sedekah, tanpa rumus', () => {
     const { html } = renderHasil(s({ gaji: 5e6 }), ACUAN);

@@ -1,0 +1,80 @@
+---
+import CalcShell from '../components/CalcShell.astro';
+import CaraHitung from '../components/CaraHitung.astro';
+import MoneyInput from '../components/MoneyInput.astro';
+import Segmented from '../components/Segmented.astro';
+import { JENIS } from '../lib/jenis';
+import { ACUAN, NISAB_EMAS_G, NISAB_PERAK_G, rupiah } from '../lib/zakat';
+import { AWAL_SIMPANAN, renderHasil } from '../lib/view/simpanan';
+
+const j = JENIS.find((x) => x.id === 'simpanan')!;
+const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+const HARTA = [
+  ['uang', 'Uang & tabungan'], ['emas', 'Emas batangan'], ['perak', 'Perak'],
+  ['investasi', 'Investasi'], ['piutang', 'Piutang'], ['perhiasan', 'Perhiasan dipakai'],
+] as const;
+---
+<CalcShell
+  j={j}
+  title="Kalkulator Zakat Emas, Tabungan & Perak 2026 — TakarZakat"
+  description={`Hitung zakat tabungan, emas, perak, dan investasi. Nisab 85 g emas (±${rupiah(NISAB_EMAS_G * ACUAN.emas24)}) memakai harga emas dunia terkini, kadar 2,5% setelah satu tahun. Lengkap dengan dalil dan khilaf perhiasan.`}
+  awal={renderHasil(AWAL_SIMPANAN, ACUAN).html}
+>
+  <div class="field">
+    <span class="legend" id="l-punya">Apa saja yang kamu punya?</span>
+    <p class="hint">Pilih semua yang sesuai. Isian lain disembunyikan.</p>
+    <div class="chips" role="group" aria-labelledby="l-punya">
+      {HARTA.map(([v, label]) => (
+        <button type="button" class="chip" data-chip={v} aria-pressed={AWAL_SIMPANAN.punya.includes(v) ? 'true' : 'false'}>{label}</button>
+      ))}
+    </div>
+  </div>
+
+  <div class="sub">
+    <div data-has="uang"><MoneyInput name="uang" label="Uang tunai & tabungan" hint="Termasuk deposito, giro, dompet digital" /></div>
+    <div data-has="emas"><MoneyInput name="emasGram" label="Emas batangan / simpanan" hint="Berat dalam gram, setara 24 karat" suffix="gram" decimal /></div>
+    <div data-has="perak" hidden><MoneyInput name="perakGram" label="Perak" hint="Berat dalam gram" suffix="gram" decimal /></div>
+    <div data-has="investasi" hidden><MoneyInput name="investasi" label="Investasi" hint="Nilai pasar saham, reksa dana, sukuk, kripto" /></div>
+    <div data-has="piutang" hidden><MoneyInput name="piutang" label="Piutang yang lancar" hint="Uang yang dipinjam orang dan kemungkinan besar kembali" /></div>
+    <div data-has="perhiasan" hidden>
+      <MoneyInput name="perhiasanGram" label="Perhiasan yang dipakai" hint="Berat total dalam gram" suffix="gram" decimal />
+      <div class="field">
+        <label for="f-karat">Kadar perhiasan</label>
+        <select id="f-karat" data-k="karatPerhiasan">
+          <option value="24">24 karat</option><option value="22">22 karat</option>
+          <option value="18" selected>18 karat</option><option value="14">14 karat</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="switch">
+          <input type="checkbox" data-k="sertakanPerhiasan" />
+          <span><b>Sertakan dalam zakat</b><span class="hint switch-hint">Syafi'i, Maliki, Hanbali: perhiasan yang dipakai wajar tidak dizakati. Hanafi: tetap dizakati.</span></span>
+        </label>
+      </div>
+    </div>
+    <MoneyInput name="utang" label="Utang jatuh tempo" hint="Yang harus dibayar dalam 12 bulan ke depan" />
+  </div>
+
+  <Segmented name="haul" tipe="bool" legend="Sudah dimiliki 1 tahun hijriah?" nilai="ya"
+    hint="Syarat haul, dihitung sejak harta mencapai nisab."
+    opsi={[{ v: 'ya', label: 'Sudah' }, { v: 'belum', label: 'Belum' }]} />
+  <Segmented name="basis" legend="Patokan nisab" nilai="emas"
+    opsi={[{ v: 'emas', label: `Emas ${NISAB_EMAS_G} g`, sub: 'PMA · BAZNAS' }, { v: 'perak', label: `Perak ${NISAB_PERAK_G} g`, sub: 'Lebih rendah' }]} />
+
+  <CaraHitung slot="info" judul="Cara menghitung zakat simpanan & emas">
+    <ol>
+      <li>Jumlahkan semua harta simpanan: uang, emas, perak, investasi, dan piutang lancar. Menurut PMA 52/2014 (Ps. 7 & 10) semuanya digabung terhadap satu nisab.</li>
+      <li>Kurangi utang yang jatuh tempo.</li>
+      <li>Bandingkan dengan nisab 85 g emas. Kalkulator memakai harga emas dunia terkini (±{rupiah(NISAB_EMAS_G * ACUAN.emas24)} pada {tgl}).</li>
+      <li>Bila mencapai nisab dan sudah dimiliki satu tahun hijriah, zakatnya 2,5%.</li>
+    </ol>
+    <h3>Perhiasan</h3>
+    <p>Perhiasan yang dipakai secara wajar tidak dizakati menurut mayoritas mazhab (Syafi'i, Maliki, Hanbali), tetapi tetap dizakati menurut Hanafi. Perhiasan yang disimpan atau berlebihan dihitung seperti emas simpanan.</p>
+  </CaraHitung>
+</CalcShell>
+
+<script>
+  import { pasang } from '../lib/calc-client';
+  import { AWAL_SIMPANAN, renderHasil, teksSalin } from '../lib/view/simpanan';
+  pasang({ awal: AWAL_SIMPANAN, render: renderHasil, salin: teksSalin });
+</script>

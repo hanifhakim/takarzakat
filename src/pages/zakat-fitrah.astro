@@ -1,0 +1,49 @@
+---
+import CalcShell from '../components/CalcShell.astro';
+import CaraHitung from '../components/CaraHitung.astro';
+import MoneyInput from '../components/MoneyInput.astro';
+import Segmented from '../components/Segmented.astro';
+import { JENIS } from '../lib/jenis';
+import { ACUAN, rupiah } from '../lib/zakat';
+import { AWAL_FITRAH, renderHasil } from '../lib/view/fitrah';
+
+const j = JENIS.find((x) => x.id === 'fitrah')!;
+---
+<CalcShell
+  j={j}
+  title="Kalkulator Zakat Fitrah 2026 (Beras & Uang) — TakarZakat"
+  description={`Hitung zakat fitrah keluarga: 2,5 kg beras per jiwa atau ${rupiah(ACUAN.fitrahBaznas)} per jiwa (BAZNAS 2026). Bisa memakai harga beras lokal. Lengkap dengan dalil dan khilaf membayar dengan uang.`}
+  awal={renderHasil(AWAL_FITRAH, ACUAN).html}
+>
+  <div class="field">
+    <span class="legend" id="l-jiwa">Jumlah jiwa</span>
+    <p class="hint">Dirimu dan semua yang kamu tanggung nafkahnya, termasuk bayi.</p>
+    <div class="stepper" role="group" aria-labelledby="l-jiwa">
+      <button type="button" data-step="-1" data-step-k="jiwa" aria-label="Kurangi satu jiwa">−</button>
+      <output data-out="jiwa" class="num" aria-live="polite">1</output>
+      <button type="button" data-step="1" data-step-k="jiwa" aria-label="Tambah satu jiwa">+</button>
+    </div>
+  </div>
+  <Segmented name="kadarKg" tipe="num" legend="Takaran per jiwa" nilai="2.5"
+    opsi={[{ v: '2.5', label: '2,5 kg', sub: 'PMA · BAZNAS' }, { v: '2.75', label: '2,75 kg', sub: 'Lebih hati-hati' }]} />
+  <Segmented name="bayar" legend="Dibayar dengan" nilai="baznas" hint={`Nominal BAZNAS 2026: ${rupiah(ACUAN.fitrahBaznas)} per jiwa.`}
+    opsi={[{ v: 'beras', label: 'Beras', sub: 'Takaran' }, { v: 'baznas', label: 'Uang', sub: 'BAZNAS' }, { v: 'harga', label: 'Uang', sub: 'Harga lokal' }]} />
+  <div data-show="bayar:harga" hidden>
+    <MoneyInput name="hargaBeras" label="Harga beras per kg" hint="Beras yang biasa kamu makan" placeholder={rupiah(ACUAN.berasKg).slice(2)} />
+  </div>
+
+  <CaraHitung slot="info" judul="Cara menghitung zakat fitrah">
+    <ol>
+      <li>Hitung jumlah jiwa: dirimu dan setiap orang yang kamu tanggung nafkahnya.</li>
+      <li>Kalikan dengan 1 sha' makanan pokok. PMA 52/2014 menetapkan 2,5 kg atau 3,5 liter beras; sebagian ulama memakai 2,75 kg untuk kehati-hatian.</li>
+      <li>Bila dibayar dengan uang: BAZNAS 2026 menetapkan {rupiah(ACUAN.fitrahBaznas)} per jiwa (SK Ketua BAZNAS 14/2026), atau pakai harga beras yang biasa kamu makan.</li>
+      <li>Tunaikan sejak awal Ramadan, paling lambat sebelum salat Idulfitri.</li>
+    </ol>
+  </CaraHitung>
+</CalcShell>
+
+<script>
+  import { pasang } from '../lib/calc-client';
+  import { AWAL_FITRAH, renderHasil, teksSalin } from '../lib/view/fitrah';
+  pasang({ awal: AWAL_FITRAH, render: renderHasil, salin: teksSalin });
+</script>

@@ -1,0 +1,11 @@
+---
+/** Kartu "Cara menghitung" yang bisa dilipat; isi lewat slot (statis, terbaca mesin pencari). */
+interface Props { judul: string }
+const { judul } = Astro.props;
+---
+<section class="card" aria-label={judul}>
+  <details>
+    <summary>{judul}</summary>
+    <div class="isi"><slot /></div>
+  </details>
+</section>

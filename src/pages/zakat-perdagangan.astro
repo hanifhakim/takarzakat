@@ -1,0 +1,38 @@
+---
+import CalcShell from '../components/CalcShell.astro';
+import CaraHitung from '../components/CaraHitung.astro';
+import MoneyInput from '../components/MoneyInput.astro';
+import Segmented from '../components/Segmented.astro';
+import { JENIS } from '../lib/jenis';
+import { ACUAN, NISAB_EMAS_G, rupiah } from '../lib/zakat';
+import { AWAL_PERDAGANGAN, renderHasil } from '../lib/view/perdagangan';
+
+const j = JENIS.find((x) => x.id === 'perdagangan')!;
+---
+<CalcShell
+  j={j}
+  title="Kalkulator Zakat Perdagangan & Usaha 2026 — TakarZakat"
+  description={`Hitung zakat dagang: kas, piutang, dan stok dikurangi utang jangka pendek. Nisab 85 g emas (±${rupiah(NISAB_EMAS_G * ACUAN.emas24)}), kadar 2,5% setelah satu tahun, sesuai PMA 52/2014.`}
+  awal={renderHasil(AWAL_PERDAGANGAN, ACUAN).html}
+>
+  <MoneyInput name="kas" label="Kas & saldo usaha" hint="Uang tunai dan rekening usaha saat haul" />
+  <MoneyInput name="piutang" label="Piutang dagang lancar" hint="Tagihan yang kemungkinan besar dibayar" />
+  <MoneyInput name="persediaan" label="Persediaan barang dagang" hint="Dinilai dengan harga pasar saat ini" />
+  <MoneyInput name="utang" label="Utang jangka pendek" hint="Jatuh tempo ≤ 12 bulan. Aset tetap (toko, mesin, kendaraan) tidak dihitung." />
+  <Segmented name="haul" tipe="bool" legend="Usaha sudah berjalan 1 tahun hijriah?" nilai="ya" opsi={[{ v: 'ya', label: 'Sudah' }, { v: 'belum', label: 'Belum' }]} />
+
+  <CaraHitung slot="info" judul="Cara menghitung zakat perdagangan">
+    <ol>
+      <li>Saat genap satu tahun hijriah, jumlahkan aktiva lancar: kas, piutang lancar, dan persediaan barang (harga pasar).</li>
+      <li>Kurangi kewajiban jangka pendek (PMA 52/2014 Ps. 12). Aset tetap seperti bangunan, mesin, dan kendaraan operasional tidak dihitung.</li>
+      <li>Bila sisanya mencapai nisab 85 g emas, zakatnya 2,5%.</li>
+    </ol>
+    <p>Contoh: kas Rp100 jt + piutang Rp50 jt + stok Rp150 jt − utang Rp60 jt = Rp240 jt → zakat Rp6.000.000.</p>
+  </CaraHitung>
+</CalcShell>
+
+<script>
+  import { pasang } from '../lib/calc-client';
+  import { AWAL_PERDAGANGAN, renderHasil, teksSalin } from '../lib/view/perdagangan';
+  pasang({ awal: AWAL_PERDAGANGAN, render: renderHasil, salin: teksSalin });
+</script>

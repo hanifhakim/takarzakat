@@ -1,0 +1,55 @@
+---
+import CalcShell from '../components/CalcShell.astro';
+import CaraHitung from '../components/CaraHitung.astro';
+import MoneyInput from '../components/MoneyInput.astro';
+import Segmented from '../components/Segmented.astro';
+import { JENIS } from '../lib/jenis';
+import { ACUAN, NISAB_GABAH_KG, rupiah } from '../lib/zakat';
+import { AWAL_PERTANIAN, renderHasil } from '../lib/view/pertanian';
+
+const j = JENIS.find((x) => x.id === 'pertanian')!;
+---
+<CalcShell
+  j={j}
+  title="Kalkulator Zakat Pertanian (Padi & Hasil Panen) — TakarZakat"
+  description={`Hitung zakat hasil panen: nisab ${NISAB_GABAH_KG} kg gabah, 10% untuk tadah hujan atau 5% untuk irigasi berbiaya, dibayar saat panen. Berdasarkan HR Bukhari 1483 dan PMA 52/2014.`}
+  awal={renderHasil(AWAL_PERTANIAN, ACUAN).html}
+>
+  <Segmented name="komoditas" legend="Hasil panen" nilai="padi"
+    opsi={[{ v: 'padi', label: 'Padi / gabah', sub: `Nisab ${NISAB_GABAH_KG} kg` }, { v: 'lain', label: 'Tanaman lain', sub: 'Dinilai dengan uang' }]} />
+  <MoneyInput name="panenKg" label="Berat hasil panen" hint="Sekali panen" suffix="kg" decimal />
+  <MoneyInput name="hargaKg" label="Harga gabah per kg (opsional)" hint="Hanya untuk menaksir nilai rupiah zakatmu" placeholder={rupiah(ACUAN.gabahKg).slice(2)} />
+  <Segmented name="pengairan" legend="Cara pengairan" nilai="hujan"
+    hint="Irigasi berbiaya: pompa, membeli air, atau alat pengangkut air."
+    opsi={[{ v: 'hujan', label: 'Tadah hujan', sub: 'Zakat 10%' }, { v: 'irigasi', label: 'Irigasi berbiaya', sub: 'Zakat 5%' }]} />
+
+  <CaraHitung slot="info" judul="Cara menghitung zakat pertanian">
+    <ol>
+      <li>Zakat dikeluarkan setiap kali panen, tanpa menunggu satu tahun (PMA 52/2014 Ps. 15).</li>
+      <li>Nisabnya 5 wasaq, yang di Indonesia ditetapkan setara {NISAB_GABAH_KG} kg gabah.</li>
+      <li>Kadarnya 10% bila diairi hujan atau sumber alami, dan 5% bila memakai irigasi berbiaya (HR Bukhari 1483).</li>
+      <li>Untuk tanaman selain padi, nilai panen dibandingkan dengan nilai {NISAB_GABAH_KG} kg gabah.</li>
+    </ol>
+    <p>Contoh: panen padi 1.200 kg dengan tadah hujan → zakat 120 kg gabah.</p>
+  </CaraHitung>
+</CalcShell>
+
+<script>
+  import { pasang } from '../lib/calc-client';
+  import { AWAL_PERTANIAN, renderHasil, teksSalin } from '../lib/view/pertanian';
+  import { ACUAN, NISAB_GABAH_KG, rupiah } from '../lib/zakat';
+
+  const TEKS = {
+    padi: { label: 'Harga gabah per kg (opsional)', hint: 'Hanya untuk menaksir nilai rupiah zakatmu', ph: rupiah(ACUAN.gabahKg).slice(2) },
+    lain: { label: 'Harga jual per kg', hint: `Nilai panen dibandingkan dengan nilai ${NISAB_GABAH_KG} kg gabah (${rupiah(NISAB_GABAH_KG * ACUAN.gabahKg)})`, ph: '0' },
+  };
+  pasang({
+    awal: AWAL_PERTANIAN, render: renderHasil, salin: teksSalin,
+    setelah: (s, form) => {
+      const t = TEKS[s.komoditas];
+      form.querySelector('label[for="f-hargaKg"]')!.textContent = t.label;
+      form.querySelector('#f-hargaKg-h')!.textContent = t.hint;
+      form.querySelector<HTMLInputElement>('#f-hargaKg')!.placeholder = t.ph;
+    },
+  });
+</script>
