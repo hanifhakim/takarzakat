@@ -51,7 +51,7 @@ const nisabNetto = NISAB_EMAS_G * ACUAN.emas24;
         <button class="btn primary" type="button" data-open="dlgLembaga">Tunaikan</button>
       </div>
       <p class="disclaimer">
-        Alat bantu hitung, bukan fatwa. Harga acuan <span id="acuanTgl">{tgl}</span> ·
+        Alat bantu hitung, bukan fatwa. Harga emas: <span id="acuanTgl">bawaan {tgl}</span> ·
         <button class="linkbtn" type="button" data-open="dlgAcuan">ubah</button>
       </p>
     </section>
@@ -70,7 +70,7 @@ const nisabNetto = NISAB_EMAS_G * ACUAN.emas24;
             <h3>Metode penghasilan bersih</h3>
             <ol>
               <li>Kurangi penghasilan dengan kebutuhan pokok dan cicilan jatuh tempo (Ijtima' Ulama MUI 2018).</li>
-              <li>Bandingkan dengan 85 g emas 24 karat: {rupiah(nisabNetto)}/tahun atau {rupiah(Math.round(nisabNetto / 12))}/bulan (harga {tgl}).</li>
+              <li>Bandingkan dengan 85 g emas 24 karat. Kalkulator memakai harga emas dunia terkini; pada {tgl} sekitar {rupiah(ACUAN.emas24)}/gram, jadi nisabnya ±{rupiah(nisabNetto)}/tahun atau ±{rupiah(Math.round(nisabNetto / 12))}/bulan.</li>
               <li>Bila mencapai nisab, zakatnya 2,5% dari penghasilan bersih.</li>
             </ol>
             <h3>Kapan dibayar?</h3>
@@ -92,7 +92,7 @@ const nisabNetto = NISAB_EMAS_G * ACUAN.emas24;
 
 <script>
   import { formatDenganKursor, formatTampil, nilaiDari } from '../lib/input';
-  import { muat } from '../lib/acuan-store';
+  import { labelHarga, muat, segarkanHarga } from '../lib/acuan-store';
   import { renderHasil, teksSalin, type StatePenghasilan } from '../lib/view/penghasilan';
 
   const form = document.getElementById('form') as HTMLFormElement;
@@ -158,10 +158,10 @@ const nisabNetto = NISAB_EMAS_G * ACUAN.emas24;
   });
 
   const tglEl = document.getElementById('acuanTgl')!;
-  const tglBawaan = tglEl.textContent!;
-  const labelAcuan = () => { tglEl.textContent = acuan.diubah ? 'diubah manual' : tglBawaan; };
+  const labelAcuan = () => { tglEl.textContent = labelHarga(acuan); };
   window.addEventListener('takar:acuan', () => { acuan = muat(); labelAcuan(); perbarui(); });
   labelAcuan();
+  segarkanHarga();
 
   // Salin rincian.
   function toast(m: string) {

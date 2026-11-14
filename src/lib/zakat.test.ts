@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// Fixture tetap: tes tidak boleh ikut berubah saat acuan.json diperbarui.
+vi.mock('../data/acuan.json', async (asli) => {
+  const m = (await asli()) as { default: Record<string, Record<string, unknown>> };
+  return { default: { ...m.default, diperbarui: '2026-11-13', emas24: { ...m.default.emas24, nilai: 2_509_000 }, perak: { ...m.default.perak, nilai: 34_300 } } };
+});
 import {
   ACUAN, fitrah, fmtAngka, parseAngka, penghasilan, perdagangan, pertanian, rupiah, simpanan,
 } from './zakat';

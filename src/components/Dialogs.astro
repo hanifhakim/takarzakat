@@ -21,14 +21,15 @@ const FIELD = [
 <dialog id="dlgAcuan" aria-labelledby="dlgAcuan-h">
   <form method="dialog">
     <h2 id="dlgAcuan-h">Harga acuan</h2>
-    <p class="hint">Dipakai untuk menghitung nisab. Bawaan: {tgl}. Ubah bila kamu punya angka yang lebih baru; tersimpan hanya di perangkat ini.</p>
+    <p class="hint">Dipakai untuk menghitung nisab. Emas dan perak otomatis memakai harga dunia terkini (<span id="dlgSumber">bawaan {tgl}</span>). Isi hanya bila ingin memakai angka sendiri, misalnya harga Antam; tersimpan hanya di perangkat ini.</p>
     {FIELD.map(([k, label, sumber]) => (
       <div class="field">
         <label for={`a-${k}`}>{label}</label>
         <div class="inp"><span class="pre" aria-hidden="true">Rp</span><input id={`a-${k}`} data-acuan={k} data-mode="int" inputmode="numeric" autocomplete="off" placeholder={rupiah(ACUAN[k]).slice(2)} /></div>
-        <p class="hint">Bawaan {rupiah(ACUAN[k])} · {sumber}</p>
+        <p class="hint">Sekarang <span data-kini={k}>{rupiah(ACUAN[k])}</span> · {sumber}</p>
       </div>
     ))}
+    <p class="fine">Pembanding: harga jual emas Antam {rupiah(acuanJson.emasAntam.nilai)}/g ({acuanJson.emasAntam.tanggal}), sudah termasuk premi ritel.</p>
     <p class="fine">Nisab penghasilan BAZNAS ({rupiah(ACUAN.nisabPenghasilanBulanBaznas)}/bulan) ditetapkan SK tahunan, tidak ikut harga harian.</p>
     <div class="dlg-actions">
       <button class="btn" value="reset" type="submit">Kembalikan bawaan</button>
@@ -55,7 +56,8 @@ const FIELD = [
 
 <script>
   import { formatTampil, nilaiDari } from '../lib/input';
-  import { muat, reset, simpan, type Ubahan } from '../lib/acuan-store';
+  import { labelHarga, muat, reset, simpan, type Ubahan } from '../lib/acuan-store';
+  import { rupiah } from '../lib/zakat';
 
   const dAcuan = document.getElementById('dlgAcuan') as HTMLDialogElement;
   document.addEventListener('click', (e) => {
@@ -65,10 +67,17 @@ const FIELD = [
     if (!d) return;
     if (d === dAcuan) {
       const a = muat();
+      let ubahan: Record<string, number> = {};
+      try { ubahan = JSON.parse(localStorage.getItem('takar.acuan') || '{}') || {}; } catch { /* abaikan */ }
       dAcuan.querySelectorAll<HTMLInputElement>('[data-acuan]').forEach((i) => {
-        const k = i.dataset.acuan as keyof typeof a;
-        i.value = a.diubah ? formatTampil(String(a[k])) : '';
+        const k = i.dataset.acuan as 'emas24' | 'perak' | 'berasKg' | 'gabahKg';
+        i.value = ubahan[k] ? formatTampil(String(ubahan[k])) : '';
+        i.placeholder = rupiah(a[k]).slice(2);
       });
+      dAcuan.querySelectorAll<HTMLElement>('[data-kini]').forEach((el) => {
+        el.textContent = rupiah(a[el.dataset.kini as 'emas24' | 'perak' | 'berasKg' | 'gabahKg']);
+      });
+      document.getElementById('dlgSumber')!.textContent = labelHarga(a);
     }
     d.showModal();
   });

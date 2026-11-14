@@ -29,10 +29,10 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
         ))}
       </ul>
       <div class="acuan">
-        <h2>Harga acuan · {tgl}</h2>
+        <h2>Harga acuan · <span id="hSumber">bawaan {tgl}</span></h2>
         <dl>
-          <dt>Emas 24K / gram</dt><dd class="num">{rupiah(ACUAN.emas24)}</dd>
-          <dt>Nisab emas ({NISAB_EMAS_G} g)</dt><dd class="num">{rupiah(NISAB_EMAS_G * ACUAN.emas24)}</dd>
+          <dt>Emas 24K dunia / gram</dt><dd class="num" id="hEmas">{rupiah(ACUAN.emas24)}</dd>
+          <dt>Nisab emas ({NISAB_EMAS_G} g)</dt><dd class="num" id="hNisab">{rupiah(NISAB_EMAS_G * ACUAN.emas24)}</dd>
           <dt>Nisab penghasilan BAZNAS / bulan</dt><dd class="num">{rupiah(ACUAN.nisabPenghasilanBulanBaznas)}</dd>
           <dt>Zakat fitrah BAZNAS / jiwa</dt><dd class="num">{rupiah(ACUAN.fitrahBaznas)}</dd>
         </dl>
@@ -40,6 +40,20 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
     </div>
   </section>
 </Base>
+
+<script>
+  import { labelHarga, muat, segarkanHarga } from '../lib/acuan-store';
+  import { NISAB_EMAS_G, rupiah } from '../lib/zakat';
+  function tampil() {
+    const a = muat();
+    document.getElementById('hEmas')!.textContent = rupiah(a.emas24);
+    document.getElementById('hNisab')!.textContent = rupiah(NISAB_EMAS_G * a.emas24);
+    document.getElementById('hSumber')!.textContent = labelHarga(a);
+  }
+  window.addEventListener('takar:acuan', tampil);
+  tampil();
+  segarkanHarga();
+</script>
 
 <style>
   .home { display: grid; gap: 28px; padding: 18px 0 16px; }

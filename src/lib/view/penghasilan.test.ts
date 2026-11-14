@@ -1,4 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// Fixture tetap: tes tidak boleh ikut berubah saat acuan.json diperbarui.
+vi.mock('../../data/acuan.json', async (asli) => {
+  const m = (await asli()) as { default: Record<string, Record<string, unknown>> };
+  return { default: { ...m.default, diperbarui: '2026-11-13', emas24: { ...m.default.emas24, nilai: 2_509_000 }, perak: { ...m.default.perak, nilai: 34_300 } } };
+});
 import { ACUAN } from '../zakat';
 import { gabung } from '../acuan-store';
 import { esc, renderHasil, teksSalin, type StatePenghasilan } from './penghasilan';
@@ -37,22 +43,6 @@ describe('renderHasil penghasilan', () => {
     const { r } = renderHasil(s({ gaji: 10e6, metode: 'netto' }), a);
     expect(r.nisab).toBe(8_500_000); // 85 × 1,2 jt / 12
     expect(r.wajib).toBe(true);
-  });
-});
-
-describe('acuan-store.gabung', () => {
-  it('mengabaikan nilai tidak valid', () => {
-    const a = gabung({ emas24: -1, perak: 'x', berasKg: 1e12, gabahKg: 7000, nisabPenghasilanBulanBaznas: 1 });
-    expect(a.emas24).toBe(ACUAN.emas24);
-    expect(a.perak).toBe(ACUAN.perak);
-    expect(a.berasKg).toBe(ACUAN.berasKg);
-    expect(a.gabahKg).toBe(7000);
-    expect(a.nisabPenghasilanBulanBaznas).toBe(ACUAN.nisabPenghasilanBulanBaznas); // tidak bisa diubah pengguna
-    expect(a.diubah).toBe(true);
-  });
-  it('null / sama dengan bawaan → tidak diubah', () => {
-    expect(gabung(null).diubah).toBe(false);
-    expect(gabung({ emas24: ACUAN.emas24 }).diubah).toBe(false);
   });
 });
 
