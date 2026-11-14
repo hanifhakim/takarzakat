@@ -114,7 +114,7 @@ dialog .hint { margin: 0 0 16px; }
 .toast.show { opacity: 1; }
 
 @media (min-width: 960px) {
-  .calc { grid-template-columns: minmax(0, 1fr) 420px; grid-template-areas: "head head" "form hasil" "info hasil"; align-items: start; column-gap: 40px; padding-bottom: 32px; }
+  .calc { grid-template-columns: minmax(0, 1fr) 420px; grid-template-areas: "head head" "form hasil" "info hasil"; grid-template-rows: auto auto 1fr; align-items: start; column-gap: 40px; padding-bottom: 32px; }
   .calc > .result { position: sticky; top: 24px; }
   .panel { padding: 24px; }
   .dock { display: none; }

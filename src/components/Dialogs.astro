@@ -1,0 +1,88 @@
+---
+/** Dialog harga acuan + daftar lembaga amil + toast. Dipakai semua halaman kalkulator. */
+import { ACUAN, rupiah } from '../lib/zakat';
+import acuanJson from '../data/acuan.json';
+
+const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+const LEMBAGA = [
+  ['BAZNAS', 'Badan Amil Zakat Nasional', 'https://baznas.go.id/bayarzakat'],
+  ['NU Care-LAZISNU', 'LAZ nasional', 'https://www.nucare.id/'],
+  ['Lazismu', 'LAZ nasional', 'https://lazismu.org/'],
+  ['Dompet Dhuafa', 'LAZ nasional', 'https://www.dompetdhuafa.org/'],
+  ['Rumah Zakat', 'LAZ nasional', 'https://www.rumahzakat.org/'],
+];
+const FIELD = [
+  ['emas24', 'Emas 24K per gram', acuanJson.emas24.sumber],
+  ['perak', 'Perak per gram', acuanJson.perak.sumber],
+  ['berasKg', 'Beras per kg (fitrah)', acuanJson.berasKg.catatan],
+  ['gabahKg', 'Gabah per kg (pertanian)', acuanJson.gabahKg.sumber],
+] as const;
+---
+<dialog id="dlgAcuan" aria-labelledby="dlgAcuan-h">
+  <form method="dialog">
+    <h2 id="dlgAcuan-h">Harga acuan</h2>
+    <p class="hint">Dipakai untuk menghitung nisab. Bawaan: {tgl}. Ubah bila kamu punya angka yang lebih baru; tersimpan hanya di perangkat ini.</p>
+    {FIELD.map(([k, label, sumber]) => (
+      <div class="field">
+        <label for={`a-${k}`}>{label}</label>
+        <div class="inp"><span class="pre" aria-hidden="true">Rp</span><input id={`a-${k}`} data-acuan={k} data-mode="int" inputmode="numeric" autocomplete="off" placeholder={rupiah(ACUAN[k]).slice(2)} /></div>
+        <p class="hint">Bawaan {rupiah(ACUAN[k])} · {sumber}</p>
+      </div>
+    ))}
+    <p class="fine">Nisab penghasilan BAZNAS ({rupiah(ACUAN.nisabPenghasilanBulanBaznas)}/bulan) ditetapkan SK tahunan, tidak ikut harga harian.</p>
+    <div class="dlg-actions">
+      <button class="btn" value="reset" type="submit">Kembalikan bawaan</button>
+      <button class="btn primary" value="ok" type="submit">Simpan</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dlgLembaga" aria-labelledby="dlgLembaga-h">
+  <form method="dialog">
+    <h2 id="dlgLembaga-h">Tunaikan zakat</h2>
+    <p class="hint">TakarZakat tidak menerima dana. Salurkan melalui amil resmi berizin pilihanmu.</p>
+    <ul class="lembaga">
+      {LEMBAGA.map(([nama, ket, url]) => (
+        <li><span>{nama}<small>{ket}</small></span><a class="btn" href={url} target="_blank" rel="noopener">Buka</a></li>
+      ))}
+    </ul>
+    <p class="fine">Daftar contoh, tanpa afiliasi. Cek izin LAZ di situs Kemenag atau BAZNAS.</p>
+    <div class="dlg-actions"><button class="btn primary" value="ok" type="submit">Tutup</button></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  import { formatTampil, nilaiDari } from '../lib/input';
+  import { muat, reset, simpan, type Ubahan } from '../lib/acuan-store';
+
+  const dAcuan = document.getElementById('dlgAcuan') as HTMLDialogElement;
+  document.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>('[data-open]');
+    if (!b) return;
+    const d = document.getElementById(b.dataset.open!) as HTMLDialogElement | null;
+    if (!d) return;
+    if (d === dAcuan) {
+      const a = muat();
+      dAcuan.querySelectorAll<HTMLInputElement>('[data-acuan]').forEach((i) => {
+        const k = i.dataset.acuan as keyof typeof a;
+        i.value = a.diubah ? formatTampil(String(a[k])) : '';
+      });
+    }
+    d.showModal();
+  });
+  dAcuan.querySelectorAll<HTMLInputElement>('[data-acuan]').forEach((i) =>
+    i.addEventListener('input', () => { i.value = formatTampil(i.value); }));
+  dAcuan.addEventListener('close', () => {
+    if (dAcuan.returnValue === 'reset') reset();
+    else if (dAcuan.returnValue === 'ok') {
+      const u: Ubahan = {};
+      dAcuan.querySelectorAll<HTMLInputElement>('[data-acuan]').forEach((i) => {
+        const v = nilaiDari(i.value);
+        if (v) u[i.dataset.acuan as keyof Ubahan] = v;
+      });
+      simpan(u);
+    }
+  });
+</script>

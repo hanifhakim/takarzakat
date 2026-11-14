@@ -1,0 +1,22 @@
+---
+interface Opsi { v: string; label: string; sub?: string }
+interface Props {
+  name: string;
+  legend: string;
+  opsi: Opsi[];
+  nilai: string;
+  hint?: string;
+}
+const { name, legend, opsi, nilai, hint } = Astro.props;
+---
+<div class="field">
+  <span class="legend" id={`l-${name}`}>{legend}</span>
+  {hint && <p class="hint">{hint}</p>}
+  <div class="seg" role="group" aria-labelledby={`l-${name}`}>
+    {opsi.map((o) => (
+      <button type="button" data-seg={name} data-v={o.v} aria-pressed={o.v === nilai ? "true" : "false"}>
+        {o.label}{o.sub && <small>{o.sub}</small>}
+      </button>
+    ))}
+  </div>
+</div>

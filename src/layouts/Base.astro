@@ -1,4 +1,10 @@
 ---
+import '@fontsource/plus-jakarta-sans/latin-400.css';
+import '@fontsource/plus-jakarta-sans/latin-500.css';
+import '@fontsource/plus-jakarta-sans/latin-600.css';
+import '@fontsource/plus-jakarta-sans/latin-700.css';
+import '@fontsource-variable/fraunces/wght.css';
+import '@fontsource/amiri/arabic-400.css';
 import '../styles/tokens.css';
 
 interface Props {
@@ -38,12 +44,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <div class="wrap">
       <header class="top">
         <a class="brand" href="/"><b>TakarZakat</b><span>kalkulator zakat</span></a>
+        <button class="iconbtn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap">Gelap</button>
       </header>
       <main id="main"><slot /></main>
       <footer class="foot">
         <p>Alat bantu hitung, bukan fatwa. Semua perhitungan terjadi di perangkatmu; tidak ada data yang dikirim.</p>
       </footer>
     </div>
+    <script>
+      const btn = document.getElementById('themeBtn')!;
+      const label = () => (btn.textContent = document.documentElement.dataset.theme === 'dark' ? 'Terang' : 'Gelap');
+      label();
+      btn.addEventListener('click', () => {
+        const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = t;
+        try { localStorage.setItem('takar.theme', t); } catch {}
+        label();
+      });
+    </script>
   </body>
 </html>
 
@@ -52,6 +70,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   .brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink); }
   .brand b { font: 600 24px/1 var(--f-serif); letter-spacing: -.01em; }
   .brand span { font-size: 13px; color: var(--muted); }
+  .iconbtn { min-width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); padding: 0 12px; font-size: 14px; color: var(--muted); cursor: pointer; }
+  .iconbtn:hover { border-color: var(--line-strong); color: var(--ink); }
   .foot { border-top: 1px solid var(--line); margin-top: 48px; padding: 20px 0 40px; font-size: 13px; color: var(--faint); }
   .foot p { margin: 0; max-width: 60ch; }
 </style>

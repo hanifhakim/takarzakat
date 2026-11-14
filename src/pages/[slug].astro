@@ -5,7 +5,9 @@ import { JENIS } from '../lib/jenis';
 import dalil from '../data/dalil.json';
 
 export function getStaticPaths() {
-  return JENIS.map((j) => ({ params: { slug: j.slug }, props: { j } }));
+  // Jenis yang sudah punya halaman kalkulator sendiri dikecualikan.
+  const SUDAH = new Set(['penghasilan']);
+  return JENIS.filter((j) => !SUDAH.has(j.id)).map((j) => ({ params: { slug: j.slug }, props: { j } }));
 }
 const { j } = Astro.props;
 const d = dalil.jenis[j.id];

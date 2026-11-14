@@ -1,0 +1,28 @@
+---
+/** Dalil & khilaf per jenis zakat, dirender statis (terbaca mesin pencari, tanpa JS). */
+import dalil from '../data/dalil.json';
+import type { Jenis } from '../lib/jenis';
+
+interface Props { id: Jenis['id']; open?: boolean }
+const { id, open = false } = Astro.props;
+const d = dalil.jenis[id];
+---
+<section class="card" aria-label="Dasar hukum">
+  <details open={open}>
+    <summary>Dasar hukum & perbedaan pendapat</summary>
+    <div class="isi">
+      <p class="khilaf">{d.khilaf}</p>
+      {d.dalil.map((x) => (
+        <div class="ref">
+          <p class="ar" lang="ar" dir="rtl">{x.ar}</p>
+          <p class="tr">{x.terjemah}</p>
+          <p class="src">
+            <a href={x.url} target="_blank" rel="noopener">{x.rujukan}</a>
+            {'derajat' in x && x.derajat && <em class:list={['grade', { weak: 'lemah' in x && x.lemah }]}>{x.derajat}</em>}
+          </p>
+        </div>
+      ))}
+      <p class="src">Regulasi: {d.regulasi}</p>
+    </div>
+  </details>
+</section>

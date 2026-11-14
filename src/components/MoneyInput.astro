@@ -1,0 +1,31 @@
+---
+/** Input angka: kosong + placeholder, format ribuan saat mengetik (lihat lib/input.ts). */
+interface Props {
+  name: string;
+  label: string;
+  hint?: string;
+  suffix?: string;
+  decimal?: boolean;
+  perLabel?: boolean;
+}
+const { name, label, hint, suffix, decimal = false, perLabel = false } = Astro.props;
+const id = `f-${name}`;
+---
+<div class="field">
+  <label for={id}>{label}{perLabel && <> <span class="per-lbl">per bulan</span></>}</label>
+  {hint && <p class="hint" id={`${id}-h`}>{hint}</p>}
+  <div class="inp">
+    {!suffix && <span class="pre" aria-hidden="true">Rp</span>}
+    <input
+      id={id}
+      name={name}
+      data-k={name}
+      data-mode={decimal ? 'dec' : 'int'}
+      inputmode={decimal ? 'decimal' : 'numeric'}
+      autocomplete="off"
+      placeholder="0"
+      aria-describedby={hint ? `${id}-h` : undefined}
+    />
+    {suffix && <span class="suf">{suffix}</span>}
+  </div>
+</div>
