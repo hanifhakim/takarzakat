@@ -7,6 +7,7 @@ import '@fontsource-variable/fraunces/wght.css';
 import '@fontsource/amiri/arabic-400.css';
 import '../styles/tokens.css';
 import fontSans from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2?url';
+import fontSans600 from '@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2?url';
 import fontSerif from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
 import { SITUS } from '../data/situs';
 
@@ -33,6 +34,7 @@ const ld = jsonld.length ? JSON.stringify(jsonld.length === 1 ? jsonld[0] : json
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <link rel="preload" href={fontSans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontSans600} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
     <meta property="og:site_name" content={SITUS.nama} />
     <meta property="og:title" content={title} />
