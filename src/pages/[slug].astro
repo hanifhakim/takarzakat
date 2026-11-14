@@ -22,7 +22,7 @@ const d = dalil.jenis[j.id];
     {d.dalil.map((x) => (
       <div class="ref">
         <p class="ar" lang="ar">{x.ar}</p>
-        <p class="tr">“{x.terjemah}”</p>
+        <p class="tr">{x.terjemah}</p>
         <p class="src">
           <a href={x.url} target="_blank" rel="noopener">{x.rujukan}</a>
           {'derajat' in x && x.derajat && <em class:list={['grade', { weak: 'lemah' in x && x.lemah }]}>{x.derajat}</em>}
