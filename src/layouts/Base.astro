@@ -1,0 +1,57 @@
+---
+import '../styles/tokens.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="theme-color" content="#F6F2EA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121614" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Pasang tema sebelum render supaya tidak berkedip.
+      (function () {
+        try {
+          var t = localStorage.getItem('takar.theme');
+          if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="top">
+        <a class="brand" href="/"><b>TakarZakat</b><span>kalkulator zakat</span></a>
+      </header>
+      <main id="main"><slot /></main>
+      <footer class="foot">
+        <p>Alat bantu hitung, bukan fatwa. Semua perhitungan terjadi di perangkatmu; tidak ada data yang dikirim.</p>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 8px; }
+  .brand { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink); }
+  .brand b { font: 600 24px/1 var(--f-serif); letter-spacing: -.01em; }
+  .brand span { font-size: 13px; color: var(--muted); }
+  .foot { border-top: 1px solid var(--line); margin-top: 48px; padding: 20px 0 40px; font-size: 13px; color: var(--faint); }
+  .foot p { margin: 0; max-width: 60ch; }
+</style>

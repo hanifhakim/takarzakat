@@ -1,0 +1,41 @@
+{
+  "diperbarui": "2026-11-13",
+  "emas24": {
+    "nilai": 2509000,
+    "satuan": "Rp/gram",
+    "sumber": "Harga jual Logam Mulia Antam (dikutip NTV News)",
+    "url": "https://www.ntvnews.id/ekonomi/01125853/harga-emas-antam-hari-ini-turun-lagi-ke-level-rp25-juta-per-gram",
+    "tanggal": "2026-11-13"
+  },
+  "perak": {
+    "nilai": 34300,
+    "satuan": "Rp/gram",
+    "sumber": "Perak Antam (dikutip Liputan6)",
+    "url": "https://www.liputan6.com/bisnis/read/8334426/harga-perak-antam-hari-ini-13-november-2026-merosot-rp-900",
+    "tanggal": "2026-11-13"
+  },
+  "nisabPenghasilanBaznas": {
+    "tahun": 91681728,
+    "bulan": 7640144,
+    "dasar": "SK Ketua BAZNAS No. 15 Tahun 2026 (emas 14 karat)",
+    "url": "https://baznas.go.id/zakatpenghasilan",
+    "berlaku": 2026
+  },
+  "fitrahBaznas": {
+    "nilai": 50000,
+    "satuan": "Rp/jiwa",
+    "dasar": "SK Ketua BAZNAS No. 14 Tahun 2026",
+    "url": "https://baznas.go.id/news-show/Ramadan_2026,_BAZNAS_RI_Tetapkan_Zakat_Fitrah_Rp50_Ribu/3708/",
+    "berlaku": 2026
+  },
+  "gabahKg": {
+    "nilai": 6500,
+    "satuan": "Rp/kg",
+    "sumber": "HPP gabah kering panen 2026"
+  },
+  "berasKg": {
+    "nilai": 20000,
+    "satuan": "Rp/kg",
+    "catatan": "Turunan Rp50.000 / 2,5 kg (BAZNAS 2026)"
+  }
+}

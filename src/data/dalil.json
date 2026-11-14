@@ -1,0 +1,128 @@
+{
+  "diverifikasi": "2026-11-14",
+  "catatan": "Teks Arab diekstrak otomatis dari quran.com API (Utsmani) dan sunnah.com. Jangan diketik manual; jalankan `npm run verify:dalil` setelah mengubah.",
+  "jenis": {
+    "penghasilan": {
+      "khilaf": "Ulama kontemporer (Al-Qaradawi, Al-Zuhaili), MUI 3/2003, dan Muhammadiyah mewajibkan zakat penghasilan. MUI Ijtima’ 2018: dihitung dari penghasilan bersih setelah kebutuhan pokok. Jumhur empat mazhab (dirujuk NU Online): tidak ada zakat saat menerima gaji; yang tersimpan dizakati sebagai uang setelah mencapai nisab dan haul.",
+      "regulasi": "Fatwa MUI 3/2003; Ijtima’ Ulama MUI 2018; PMA 52/2014 jo. PMA 31/2019; SK Ketua BAZNAS 15/2026.",
+      "dalil": [
+        {
+          "tipe": "ayat",
+          "rujukan": "QS Al-Baqarah [2:267]",
+          "ar": "يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَنفِقُوا۟ مِن طَيِّبَـٰتِ مَا كَسَبْتُمْ وَمِمَّآ أَخْرَجْنَا لَكُم مِّنَ ٱلْأَرْضِ …",
+          "terjemah": "Wahai orang-orang yang beriman! Infakkanlah sebagian dari hasil usahamu yang baik-baik dan sebagian dari apa yang Kami keluarkan dari bumi untukmu.",
+          "url": "https://quran.com/2/267"
+        },
+        {
+          "tipe": "ayat",
+          "rujukan": "QS Al-Baqarah [2:219]",
+          "ar": "… وَيَسْـَٔلُونَكَ مَاذَا يُنفِقُونَ قُلِ ٱلْعَفْوَ …",
+          "terjemah": "Dan mereka menanyakan kepadamu (tentang) apa yang (harus) mereka infakkan. Katakanlah, \"Kelebihan (dari apa yang diperlukan).\"",
+          "url": "https://quran.com/2/219"
+        }
+      ]
+    },
+    "simpanan": {
+      "khilaf": "Nisab 20 dinar dikonversi 85 g (PMA, BAZNAS) atau 77,5 g (sebagian rujukan NU). Perhiasan yang dipakai wajar: tidak dizakati menurut Syafi’i, Maliki, Hanbali; tetap dizakati menurut Hanafi.",
+      "regulasi": "PMA 52/2014 Pasal 4–10: emas 85 g, perak 595 g, uang & surat berharga setara 85 g emas, 2,5%, setelah haul, dihitung gabungan.",
+      "dalil": [
+        {
+          "tipe": "ayat",
+          "rujukan": "QS At-Taubah [9:34]",
+          "ar": "… وَٱلَّذِينَ يَكْنِزُونَ ٱلذَّهَبَ وَٱلْفِضَّةَ وَلَا يُنفِقُونَهَا فِى سَبِيلِ ٱللَّهِ فَبَشِّرْهُم بِعَذَابٍ أَلِيمٍ",
+          "terjemah": "Dan orang-orang yang menyimpan emas dan perak dan tidak menginfakkannya di jalan Allah, maka berikanlah kabar gembira kepada mereka, (bahwa mereka akan mendapat) azab yang pedih.",
+          "url": "https://quran.com/9/34"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Abu Dawud 1573, dari Ali bin Abi Thalib",
+          "ar": "فَإِذَا كَانَتْ لَكَ مِائَتَا دِرْهَمٍ وَحَالَ عَلَيْهَا الْحَوْلُ فَفِيهَا خَمْسَةُ دَرَاهِمَ … حَتَّى يَكُونَ لَكَ عِشْرُونَ دِينَارًا فَإِذَا كَانَ لَكَ عِشْرُونَ دِينَارًا وَحَالَ عَلَيْهَا الْحَوْلُ فَفِيهَا نِصْفُ دِينَارٍ",
+          "terjemah": "Jika engkau memiliki 200 dirham dan telah berlalu satu tahun, zakatnya 5 dirham … sampai engkau memiliki 20 dinar; jika 20 dinar dan berlalu satu tahun, zakatnya setengah dinar.",
+          "url": "https://sunnah.com/abudawud:1573",
+          "derajat": "Sahih (Al-Albani)"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Bukhari 1405, dari Abu Sa’id",
+          "ar": "لَيْسَ فِيمَا دُونَ خَمْسِ أَوَاقٍ صَدَقَةٌ، وَلَيْسَ فِيمَا دُونَ خَمْسِ ذَوْدٍ صَدَقَةٌ، وَلَيْسَ فِيمَا دُونَ خَمْسِ أَوْسُقٍ صَدَقَةٌ",
+          "terjemah": "Tidak ada zakat pada perak di bawah 5 uqiyah, pada unta di bawah 5 ekor, dan pada hasil bumi di bawah 5 wasaq.",
+          "url": "https://sunnah.com/bukhari:1405",
+          "derajat": "Sahih"
+        }
+      ]
+    },
+    "perdagangan": {
+      "khilaf": "Jumhur ulama mewajibkan zakat perdagangan. Hadis Samurah yang sering dikutip dinilai lemah (dha’if) oleh Al-Albani, sehingga para ulama juga bersandar pada keumuman ayat dan praktik sahabat.",
+      "regulasi": "PMA 52/2014 Pasal 11–13: nisab setara 85 g emas, 2,5% dari aktiva lancar dikurangi kewajiban jangka pendek, setelah haul.",
+      "dalil": [
+        {
+          "tipe": "ayat",
+          "rujukan": "QS Al-Baqarah [2:267]",
+          "ar": "يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَنفِقُوا۟ مِن طَيِّبَـٰتِ مَا كَسَبْتُمْ وَمِمَّآ أَخْرَجْنَا لَكُم مِّنَ ٱلْأَرْضِ …",
+          "terjemah": "Wahai orang-orang yang beriman! Infakkanlah sebagian dari hasil usahamu yang baik-baik dan sebagian dari apa yang Kami keluarkan dari bumi untukmu.",
+          "url": "https://quran.com/2/267"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Abu Dawud 1562, dari Samurah bin Jundub",
+          "ar": "كَانَ يَأْمُرُنَا أَنْ نُخْرِجَ الصَّدَقَةَ مِنَ الَّذِي نُعِدُّ لِلْبَيْعِ",
+          "terjemah": "Beliau memerintahkan kami mengeluarkan zakat dari barang yang kami siapkan untuk dijual.",
+          "url": "https://sunnah.com/abudawud:1562",
+          "derajat": "Dha’if (Al-Albani)",
+          "lemah": true
+        }
+      ]
+    },
+    "pertanian": {
+      "khilaf": "Kadar campuran (7,5%) dan pengurangan biaya produksi dibahas sebagian ulama; belum dijadikan fitur karena belum diverifikasi.",
+      "regulasi": "PMA 52/2014 Pasal 14–15: nisab 653 kg gabah, 10% tadah hujan atau 5% irigasi, saat panen.",
+      "dalil": [
+        {
+          "tipe": "ayat",
+          "rujukan": "QS Al-An’am [6:141]",
+          "ar": "… كُلُوا۟ مِن ثَمَرِهِۦٓ إِذَآ أَثْمَرَ وَءَاتُوا۟ حَقَّهُۥ يَوْمَ حَصَادِهِۦ …",
+          "terjemah": "Makanlah buahnya apabila ia berbuah dan berikanlah haknya (zakatnya) pada waktu memetik hasilnya",
+          "url": "https://quran.com/6/141"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Bukhari 1483, dari Ibnu Umar",
+          "ar": "فِيمَا سَقَتِ السَّمَاءُ وَالْعُيُونُ أَوْ كَانَ عَثَرِيًّا الْعُشْرُ، وَمَا سُقِيَ بِالنَّضْحِ نِصْفُ الْعُشْرِ",
+          "terjemah": "Tanaman yang diairi hujan, mata air, atau menyerap air sendiri zakatnya sepersepuluh; yang diairi dengan alat pengangkut air seperdua puluh.",
+          "url": "https://sunnah.com/bukhari:1483",
+          "derajat": "Sahih"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Bukhari 1405, dari Abu Sa’id",
+          "ar": "لَيْسَ فِيمَا دُونَ خَمْسِ أَوَاقٍ صَدَقَةٌ، وَلَيْسَ فِيمَا دُونَ خَمْسِ ذَوْدٍ صَدَقَةٌ، وَلَيْسَ فِيمَا دُونَ خَمْسِ أَوْسُقٍ صَدَقَةٌ",
+          "terjemah": "Tidak ada zakat pada perak di bawah 5 uqiyah, pada unta di bawah 5 ekor, dan pada hasil bumi di bawah 5 wasaq.",
+          "url": "https://sunnah.com/bukhari:1405",
+          "derajat": "Sahih"
+        }
+      ]
+    },
+    "fitrah": {
+      "khilaf": "Membayar dengan uang: tidak sah menurut Syafi’iyah dan jumhur; sah menurut Hanafiyah. LBM PBNU (2020) membolehkan dengan berpindah mazhab dalam masalah ini, dengan takaran tetap 2,5–2,75 kg beras. PMA 52/2014 membolehkan uang senilai 2,5 kg / 3,5 liter.",
+      "regulasi": "PMA 52/2014 Pasal 30–31: 2,5 kg atau 3,5 liter beras per jiwa, boleh diganti uang; SK Ketua BAZNAS 14/2026: Rp50.000 per jiwa.",
+      "dalil": [
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Bukhari 1503, dari Ibnu Umar",
+          "ar": "فَرَضَ رَسُولُ اللَّهِ صلى الله عليه وسلم زَكَاةَ الْفِطْرِ صَاعًا مِنْ تَمْرٍ، أَوْ صَاعًا مِنْ شَعِيرٍ عَلَى الْعَبْدِ وَالْحُرِّ، وَالذَّكَرِ وَالأُنْثَى، وَالصَّغِيرِ وَالْكَبِيرِ مِنَ الْمُسْلِمِينَ، وَأَمَرَ بِهَا أَنْ تُؤَدَّى قَبْلَ خُرُوجِ النَّاسِ إِلَى الصَّلاَةِ",
+          "terjemah": "Rasulullah ﷺ mewajibkan zakat fitrah satu sha’ kurma atau satu sha’ gandum atas setiap muslim, hamba maupun merdeka, laki-laki maupun perempuan, kecil maupun besar, dan memerintahkan agar ditunaikan sebelum orang-orang keluar untuk salat Id.",
+          "url": "https://sunnah.com/bukhari:1503",
+          "derajat": "Sahih"
+        },
+        {
+          "tipe": "hadis",
+          "rujukan": "HR Abu Dawud 1609, dari Ibnu Abbas",
+          "ar": "فَرَضَ رَسُولُ اللَّهِ صلى الله عليه وسلم زَكَاةَ الْفِطْرِ طُهْرَةً لِلصَّائِمِ مِنَ اللَّغْوِ وَالرَّفَثِ وَطُعْمَةً لِلْمَسَاكِينِ",
+          "terjemah": "Rasulullah ﷺ mewajibkan zakat fitrah sebagai penyuci bagi orang yang berpuasa dari perkataan sia-sia dan kotor, serta makanan bagi orang miskin.",
+          "url": "https://sunnah.com/abudawud:1609",
+          "derajat": "Hasan (Al-Albani)"
+        }
+      ]
+    }
+  }
+}
