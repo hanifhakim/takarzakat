@@ -52,7 +52,7 @@
       ]
     },
     "perdagangan": {
-      "khilaf": "Jumhur ulama mewajibkan zakat perdagangan. Hadis Samurah yang sering dikutip dinilai lemah (dha’if) oleh Al-Albani, sehingga para ulama juga bersandar pada keumuman ayat dan praktik sahabat.",
+      "khilaf": "Jumhur ulama mewajibkan zakat perdagangan. Hadis Samurah yang sering dikutip dinilai lemah (dha’if) oleh Al-Albani. Dalil lain yang biasa dipakai adalah keumuman QS Al-Baqarah [2:267] di bawah.",
       "regulasi": "PMA 52/2014 Pasal 11–13: nisab setara 85 g emas, 2,5% dari aktiva lancar dikurangi kewajiban jangka pendek, setelah haul.",
       "dalil": [
         {
@@ -74,7 +74,7 @@
       ]
     },
     "pertanian": {
-      "khilaf": "Kadar campuran (7,5%) dan pengurangan biaya produksi dibahas sebagian ulama; belum dijadikan fitur karena belum diverifikasi.",
+      "khilaf": "Ada pendapat kadar 7,5% untuk sawah yang diairi campuran, dan pendapat yang membolehkan biaya produksi dikurangkan. Keduanya belum kami cek dari sumber primer, jadi kalkulator tidak memakainya.",
       "regulasi": "PMA 52/2014 Pasal 14–15: nisab 653 kg gabah, 10% tadah hujan atau 5% irigasi, saat panen.",
       "dalil": [
         {

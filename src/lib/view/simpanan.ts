@@ -57,7 +57,7 @@ export function renderHasil(s: StateSimpanan, a: Acuan): HasilView & { r: Hasil 
       rumus: r.wajib ? `${pct(r.kadar)} × ${rupiah(r.dasar)} = ${rupiah(r.zakat)}` : undefined,
     }) + pilihan({
       judul: 'Patokan nisab: emas atau perak?',
-      teks: 'Hadis menetapkan dua nisab: 20 dinar emas dan 200 dirham perak. PMA 52/2014 dan lembaga di Indonesia memakai <b>emas 85 g</b>. Sebagian ulama menganjurkan <b>perak 595 g</b> yang jauh lebih rendah karena lebih berpihak pada penerima zakat.',
+      teks: 'Hadis menyebut dua nisab: 20 dinar emas dan 200 dirham perak. PMA 52/2014 dan lembaga zakat di Indonesia memakai <b>emas 85 g</b>. Nisab <b>perak 595 g</b> nilainya jauh lebih rendah, jadi lebih banyak harta yang terhitung wajib zakat.',
       kunci: 'basis', aktif: s.basis,
       kartu: [
         { v: 'emas', t: `Emas ${NISAB_EMAS_G} g`, nilai: status(e), sub: `Nisab ${rupiah(e.nisab)}` },

@@ -11,18 +11,18 @@ const tglDalil = fmt(dalil.diverifikasi);
 const lemah = Object.values(dalil.jenis).flatMap((j) => j.dalil).filter((d) => 'lemah' in d && d.lemah);
 
 const ACU = [
-  { n: 'Harga emas 24K dunia', v: `${rupiah(raw.emas24.nilai)}/g`, s: 'Live dari gold-api.com × kurs ECB; angka ini cadangan', t: raw.emas24.tanggal, url: raw.emas24.url },
-  { n: 'Harga perak dunia', v: `${rupiah(raw.perak.nilai)}/g`, s: 'Live dari gold-api.com × kurs ECB; angka ini cadangan', t: raw.perak.tanggal, url: raw.perak.url },
-  { n: 'Nisab penghasilan BAZNAS', v: `${rupiah(raw.nisabPenghasilanBaznas.bulan)}/bulan`, s: raw.nisabPenghasilanBaznas.dasar, t: String(raw.nisabPenghasilanBaznas.berlaku), url: raw.nisabPenghasilanBaznas.url },
-  { n: 'Zakat fitrah BAZNAS', v: `${rupiah(raw.fitrahBaznas.nilai)}/jiwa`, s: raw.fitrahBaznas.dasar, t: String(raw.fitrahBaznas.berlaku), url: raw.fitrahBaznas.url },
-  { n: 'Harga gabah', v: `${rupiah(raw.gabahKg.nilai)}/kg`, s: raw.gabahKg.sumber, t: '2026' },
-  { n: 'Harga beras', v: `${rupiah(raw.berasKg.nilai)}/kg`, s: raw.berasKg.catatan, t: '2026' },
+  { n: 'Harga emas 24K dunia', v: `${rupiah(raw.emas24.nilai)}/g`, s: 'gold-api.com × kurs ECB. Angka ini cadangan; kalkulator memakai harga terkini', t: fmt(raw.emas24.tanggal), url: raw.emas24.url },
+  { n: 'Harga perak dunia', v: `${rupiah(raw.perak.nilai)}/g`, s: 'gold-api.com × kurs ECB, sama seperti emas', t: fmt(raw.perak.tanggal), url: raw.perak.url },
+  { n: 'Nisab penghasilan BAZNAS', v: `${rupiah(raw.nisabPenghasilanBaznas.bulan)}/bulan`, s: raw.nisabPenghasilanBaznas.dasar, t: '', url: raw.nisabPenghasilanBaznas.url },
+  { n: 'Zakat fitrah BAZNAS', v: `${rupiah(raw.fitrahBaznas.nilai)}/jiwa`, s: raw.fitrahBaznas.dasar, t: '', url: raw.fitrahBaznas.url },
+  { n: 'Harga gabah', v: `${rupiah(raw.gabahKg.nilai)}/kg`, s: raw.gabahKg.sumber, t: '' },
+  { n: 'Harga beras', v: `${rupiah(raw.berasKg.nilai)}/kg`, s: 'Rp50.000 nominal fitrah BAZNAS 2026 dibagi 2,5 kg', t: '' },
 ];
 
 const RUMUS = [
   { j: 'penghasilan', bawaan: `BAZNAS: penghasilan kotor ≥ ${rupiah(ACUAN.nisabPenghasilanBulanBaznas)}/bulan → 2,5%.`,
     lain: `Penghasilan bersih (MUI 2018, Muhammadiyah): setelah kebutuhan pokok dan cicilan, dibandingkan 85 g emas 24K.`,
-    alasan: 'Ketentuan resmi lembaga zakat nasional dan yang paling banyak dipakai.' },
+    alasan: 'Ketentuan resmi BAZNAS, lembaga zakat pemerintah.' },
   { j: 'simpanan', bawaan: `Uang + emas + perak + investasi + piutang − utang jatuh tempo ≥ ${NISAB_EMAS_G} g emas, setelah satu tahun hijriah → 2,5%.`,
     lain: `Nisab perak ${NISAB_PERAK_G} g. Perhiasan yang dipakai bisa disertakan (Hanafi).`,
     alasan: 'PMA 52/2014 Pasal 7 dan 10 menggabungkan harta simpanan terhadap nisab emas. Perhiasan dipakai tidak dihitung, mengikuti mayoritas mazhab.' },
@@ -42,7 +42,7 @@ const nama = (id: string) => JENIS.find((x) => x.id === id)!;
   <article class="prose">
     <a class="back" href="/">← Semua jenis zakat</a>
     <h1>Cara kerja &amp; sumber</h1>
-    <p class="lede">TakarZakat adalah alat bantu hitung, bukan fatwa. Halaman ini menjelaskan dari mana setiap angka berasal, pendapat mana yang dipakai sebagai bawaan, dan apa yang belum bisa kami pastikan.</p>
+    <p class="lede">TakarZakat alat bantu hitung, bukan fatwa. Di sini tercatat asal setiap angka, pendapat yang kami pakai sebagai bawaan beserta alasannya, dan hal-hal yang belum bisa kami pastikan.</p>
 
     <nav class="toc" aria-label="Isi halaman">
       <a href="#acuan">Angka acuan</a><a href="#emas">Harga emas</a><a href="#rumus">Rumus</a>
@@ -63,7 +63,7 @@ const nama = (id: string) => JENIS.find((x) => x.id === id)!;
           <thead><tr><th scope="col">Acuan</th><th scope="col">Nilai</th><th scope="col">Sumber</th></tr></thead>
           <tbody>
             {ACU.map((a) => (
-              <tr><th scope="row">{a.n}</th><td class="num">{a.v}</td><td>{a.url ? <a href={a.url} rel="noopener">{a.s}</a> : a.s} <span class="t">({a.t})</span></td></tr>
+              <tr><th scope="row">{a.n}</th><td class="num">{a.v}</td><td>{a.url ? <a href={a.url} rel="noopener">{a.s}</a> : a.s} {a.t && <span class="t">({a.t})</span>}</td></tr>
             ))}
           </tbody>
         </table>
@@ -97,19 +97,19 @@ const nama = (id: string) => JENIS.find((x) => x.id === id)!;
     <section id="dalil">
       <h2>Dalil</h2>
       <p>Teks Arab ayat diambil langsung dari quran.com (mushaf Utsmani, terjemahan Kemenag) dan teks hadis dari sunnah.com, tidak diketik ulang. Setiap rujukan dicocokkan ulang secara otomatis dengan sumbernya; pengecekan terakhir {tglDalil}.</p>
-      <p>Derajat hadis ditampilkan apa adanya. Hadis yang dinilai lemah tetap ditampilkan karena sering dikutip, dengan tanda jelas:</p>
+      <p>Derajat setiap hadis ikut ditampilkan. Hadis berikut dinilai lemah, tetapi tetap kami cantumkan karena sering dikutip:</p>
       <ul>{lemah.map((d) => <li><a href={d.url} rel="noopener">{d.rujukan}</a>: {'derajat' in d ? d.derajat : 'lemah'}</li>)}</ul>
       <p>Regulasi yang dibaca dari dokumen aslinya: PMA 52/2014, SK Ketua BAZNAS 14/2026 dan 15/2026, Kajian Nisab BAZNAS 2026, dan Himpunan Fatwa Zakat MUI 1976–2021.</p>
     </section>
 
     <section id="belum">
       <h2>Belum terverifikasi</h2>
-      <p>Hal-hal berikut belum bisa kami pastikan dari sumber primer, jadi <b>tidak dipakai</b> sebagai fitur kalkulator:</p>
+      <p>Hal-hal berikut belum bisa kami pastikan dari sumber primer, jadi kalkulator tidak memakainya:</p>
       <ul>
         <li>Kadar 7,5% untuk pengairan campuran, dan apakah biaya produksi pertanian boleh dikurangkan.</li>
         <li>Rincian jenis utang yang boleh dikurangkan (misalnya cicilan KPR jangka panjang). Kalkulator hanya mengurangkan utang yang jatuh tempo dalam 12 bulan.</li>
         <li>Teks PMA 31/2019 dari dokumen aslinya; isinya hanya dikutip melalui SK dan kajian BAZNAS.</li>
-        <li>Kaitan QS Al-A'la [87:14] dengan zakat fitrah, dan atsar sahabat tentang zakat perdagangan.</li>
+        <li>Kaitan QS Al-A’la [87:14] dengan zakat fitrah, dan atsar sahabat tentang zakat perdagangan.</li>
       </ul>
     </section>
 
@@ -119,14 +119,14 @@ const nama = (id: string) => JENIS.find((x) => x.id === id)!;
         <li>Semua perhitungan terjadi di peramban. Angka yang kamu isi tidak pernah dikirim ke server mana pun.</li>
         <li>Satu-satunya permintaan data adalah harga emas dan perak (<code>/api/harga</code>), tanpa informasi tentang kamu.</li>
         <li>Ubahan harga dan pilihan tema disimpan di perangkatmu (localStorage). Hapus data situs di peramban untuk menghapusnya.</li>
-        <li>Kunjungan halaman dihitung dengan Cloudflare Web Analytics: tanpa cookie, tanpa sidik jari perangkat, dan tanpa isian kalkulator.</li>
+        {SITUS.analytics && <li>Jumlah kunjungan halaman dihitung dengan Cloudflare Web Analytics, yang tidak memakai cookie dan tidak melihat isian kalkulator.</li>}
         <li>Tidak ada iklan, akun, atau ajakan donasi. TakarZakat tidak berafiliasi dengan lembaga zakat mana pun.</li>
       </ul>
     </section>
 
     <section id="lapor">
       <h2>Lapor kesalahan</h2>
-      <p>Menemukan angka, dalil, atau penjelasan yang keliru? Kirim email ke <a data-mail={`${SITUS.email.user}|${SITUS.email.domain}`} data-mail-text href="#lapor">{SITUS.email.user} [at] {SITUS.email.domain}</a>. Sertakan halaman, angka yang kamu isi, dan sumber pembandingnya bila ada.</p>
+      <p>Kalau menemukan angka, dalil, atau penjelasan yang keliru, kirim email ke <a data-mail={`${SITUS.email.user}|${SITUS.email.domain}`} data-mail-text href="#lapor">{SITUS.email.user} [at] {SITUS.email.domain}</a>. Sertakan halaman, angka yang kamu isi, dan sumber pembandingnya bila ada.</p>
     </section>
   </article>
 </Base>

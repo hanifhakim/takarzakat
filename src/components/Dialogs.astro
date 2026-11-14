@@ -21,7 +21,7 @@ const FIELD = [
 <dialog id="dlgAcuan" aria-labelledby="dlgAcuan-h">
   <form method="dialog">
     <h2 id="dlgAcuan-h">Harga acuan</h2>
-    <p class="hint">Dipakai untuk menghitung nisab. Emas dan perak otomatis memakai harga dunia terkini (<span id="dlgSumber">bawaan {tgl}</span>). Isi hanya bila ingin memakai angka sendiri, misalnya harga Antam; tersimpan hanya di perangkat ini.</p>
+    <p class="hint">Dipakai untuk menghitung nisab. Emas dan perak otomatis memakai harga dunia terkini (<span id="dlgSumber">bawaan {tgl}</span>). Isi kolom di bawah bila ingin memakai angka sendiri, misalnya harga Antam. Angkamu hanya tersimpan di perangkat ini.</p>
     {FIELD.map(([k, label, sumber]) => (
       <div class="field">
         <label for={`a-${k}`}>{label}</label>
@@ -29,7 +29,7 @@ const FIELD = [
         <p class="hint">Sekarang <span data-kini={k}>{rupiah(ACUAN[k])}</span> · {sumber}</p>
       </div>
     ))}
-    <p class="fine">Pembanding: harga jual emas Antam {rupiah(acuanJson.emasAntam.nilai)}/g ({acuanJson.emasAntam.tanggal}), sudah termasuk premi ritel.</p>
+    <p class="fine">Pembanding: harga jual emas Antam {rupiah(acuanJson.emasAntam.nilai)}/g ({new Date(acuanJson.emasAntam.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}), sudah termasuk premi toko.</p>
     <p class="fine">Nisab penghasilan BAZNAS ({rupiah(ACUAN.nisabPenghasilanBulanBaznas)}/bulan) ditetapkan SK tahunan, tidak ikut harga harian.</p>
     <div class="dlg-actions">
       <button class="btn" value="reset" type="submit">Kembalikan bawaan</button>

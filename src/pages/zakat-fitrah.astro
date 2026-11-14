@@ -17,7 +17,7 @@ const j = JENIS.find((x) => x.id === 'fitrah')!;
 >
   <div class="field">
     <span class="legend" id="l-jiwa">Jumlah jiwa</span>
-    <p class="hint">Dirimu dan semua yang kamu tanggung nafkahnya, termasuk bayi.</p>
+    <p class="hint">Dirimu dan semua yang kamu tanggung nafkahnya, termasuk anak-anak.</p>
     <div class="stepper" role="group" aria-labelledby="l-jiwa">
       <button type="button" data-step="-1" data-step-k="jiwa" aria-label="Kurangi satu jiwa">−</button>
       <output data-out="jiwa" class="num" aria-live="polite">1</output>
@@ -35,9 +35,8 @@ const j = JENIS.find((x) => x.id === 'fitrah')!;
   <CaraHitung slot="info" judul="Cara menghitung zakat fitrah">
     <ol>
       <li>Hitung jumlah jiwa: dirimu dan setiap orang yang kamu tanggung nafkahnya.</li>
-      <li>Kalikan dengan 1 sha' makanan pokok. PMA 52/2014 menetapkan 2,5 kg atau 3,5 liter beras; sebagian ulama memakai 2,75 kg untuk kehati-hatian.</li>
+      <li>Kalikan dengan 1 sha' makanan pokok. PMA 52/2014 menetapkan 2,5 kg atau 3,5 liter beras; LBM PBNU memakai 2,75 kg untuk kehati-hatian.</li>
       <li>Bila dibayar dengan uang: BAZNAS 2026 menetapkan {rupiah(ACUAN.fitrahBaznas)} per jiwa (SK Ketua BAZNAS 14/2026), atau pakai harga beras yang biasa kamu makan.</li>
-      <li>Tunaikan sejak awal Ramadan, paling lambat sebelum salat Idulfitri.</li>
     </ol>
   </CaraHitung>
 </CalcShell>

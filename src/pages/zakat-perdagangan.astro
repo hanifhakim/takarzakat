@@ -18,7 +18,7 @@ const j = JENIS.find((x) => x.id === 'perdagangan')!;
   <MoneyInput name="kas" label="Kas & saldo usaha" hint="Uang tunai dan rekening usaha saat haul" />
   <MoneyInput name="piutang" label="Piutang dagang lancar" hint="Tagihan yang kemungkinan besar dibayar" />
   <MoneyInput name="persediaan" label="Persediaan barang dagang" hint="Dinilai dengan harga pasar saat ini" />
-  <MoneyInput name="utang" label="Utang jangka pendek" hint="Jatuh tempo ≤ 12 bulan. Aset tetap (toko, mesin, kendaraan) tidak dihitung." />
+  <MoneyInput name="utang" label="Utang jangka pendek" hint="Yang jatuh tempo dalam 12 bulan ke depan" />
   <Segmented name="haul" tipe="bool" legend="Usaha sudah berjalan 1 tahun hijriah?" nilai="ya" opsi={[{ v: 'ya', label: 'Sudah' }, { v: 'belum', label: 'Belum' }]} />
 
   <CaraHitung slot="info" judul="Cara menghitung zakat perdagangan">

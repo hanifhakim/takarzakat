@@ -22,7 +22,7 @@ const HARTA = [
 >
   <div class="field">
     <span class="legend" id="l-punya">Apa saja yang kamu punya?</span>
-    <p class="hint">Pilih semua yang sesuai. Isian lain disembunyikan.</p>
+    <p class="hint">Isian di bawah menyesuaikan pilihanmu.</p>
     <div class="chips" role="group" aria-labelledby="l-punya">
       {HARTA.map(([v, label]) => (
         <button type="button" class="chip" data-chip={v} aria-pressed={AWAL_SIMPANAN.punya.includes(v) ? 'true' : 'false'}>{label}</button>
@@ -35,7 +35,7 @@ const HARTA = [
     <div data-has="emas"><MoneyInput name="emasGram" label="Emas batangan / simpanan" hint="Berat dalam gram, setara 24 karat" suffix="gram" decimal /></div>
     <div data-has="perak" hidden><MoneyInput name="perakGram" label="Perak" hint="Berat dalam gram" suffix="gram" decimal /></div>
     <div data-has="investasi" hidden><MoneyInput name="investasi" label="Investasi" hint="Nilai pasar saham, reksa dana, sukuk, kripto" /></div>
-    <div data-has="piutang" hidden><MoneyInput name="piutang" label="Piutang yang lancar" hint="Uang yang dipinjam orang dan kemungkinan besar kembali" /></div>
+    <div data-has="piutang" hidden><MoneyInput name="piutang" label="Piutang yang lancar" hint="Uang yang kamu pinjamkan dan kemungkinan besar dibayar" /></div>
     <div data-has="perhiasan" hidden>
       <MoneyInput name="perhiasanGram" label="Perhiasan yang dipakai" hint="Berat total dalam gram" suffix="gram" decimal />
       <div class="field">
@@ -48,7 +48,7 @@ const HARTA = [
       <div class="field">
         <label class="switch">
           <input type="checkbox" data-k="sertakanPerhiasan" />
-          <span><b>Sertakan dalam zakat</b><span class="hint switch-hint">Syafi'i, Maliki, Hanbali: perhiasan yang dipakai wajar tidak dizakati. Hanafi: tetap dizakati.</span></span>
+          <span><b>Sertakan dalam zakat</b><span class="hint switch-hint">Syafi’i, Maliki, Hanbali: perhiasan yang dipakai wajar tidak dizakati. Hanafi: tetap dizakati.</span></span>
         </label>
       </div>
     </div>
@@ -68,8 +68,6 @@ const HARTA = [
       <li>Bandingkan dengan nisab 85 g emas. Kalkulator memakai harga emas dunia terkini (±{rupiah(NISAB_EMAS_G * ACUAN.emas24)} pada {tgl}).</li>
       <li>Bila mencapai nisab dan sudah dimiliki satu tahun hijriah, zakatnya 2,5%.</li>
     </ol>
-    <h3>Perhiasan</h3>
-    <p>Perhiasan yang dipakai secara wajar tidak dizakati menurut mayoritas mazhab (Syafi'i, Maliki, Hanbali), tetapi tetap dizakati menurut Hanafi. Perhiasan yang disimpan atau berlebihan dihitung seperti emas simpanan.</p>
   </CaraHitung>
 </CalcShell>
 

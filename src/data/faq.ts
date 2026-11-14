@@ -18,7 +18,7 @@ export const FAQ: Record<Jenis['id'], Tanya[]> = {
     { q: 'Gaji 8 juta per bulan wajib zakat?',
       a: `Dengan metode BAZNAS, ya: Rp8.000.000 melewati nisab ${bulan}, jadi zakatnya 2,5% × Rp8.000.000 = Rp200.000 per bulan. Dengan metode penghasilan bersih, tergantung sisa setelah kebutuhan pokok dan cicilan.` },
     { q: 'Zakat penghasilan dihitung dari gaji kotor atau bersih?',
-      a: 'Keduanya pendapat yang diakui. BAZNAS menghitung dari penghasilan kotor (bruto). Ijtima\u2019 Ulama MUI 2018 dan Muhammadiyah menghitung dari penghasilan setelah kebutuhan pokok dan utang jatuh tempo. Ikuti yang kamu yakini atau ketentuan lembaga tempatmu berzakat.' },
+      a: 'Keduanya pendapat yang diakui. BAZNAS menghitung dari penghasilan kotor (bruto). Ijtima\u2019 Ulama MUI 2018 dan Muhammadiyah menghitung dari penghasilan setelah kebutuhan pokok dan utang jatuh tempo.' },
     { q: 'Apakah zakat penghasilan wajib menurut semua ulama?',
       a: 'Tidak. MUI (Fatwa 3/2003), BAZNAS, dan Muhammadiyah mewajibkannya. Jumhur ulama empat mazhab, yang banyak dirujuk NU, berpendapat gaji tidak dizakati saat diterima; bagian yang tersimpan dizakati sebagai simpanan setelah mencapai nisab dan satu tahun.' },
   ],
@@ -30,7 +30,7 @@ export const FAQ: Record<Jenis['id'], Tanya[]> = {
     { q: 'Apakah perhiasan yang dipakai wajib dizakati?',
       a: 'Ada perbedaan pendapat. Mazhab Syafi\u2019i, Maliki, dan Hanbali: perhiasan yang dipakai secara wajar tidak dizakati. Mazhab Hanafi: tetap dizakati. Perhiasan yang disimpan atau berlebihan dihitung seperti emas simpanan.' },
     { q: 'Kenapa ada nisab emas dan nisab perak?',
-      a: `Hadis menetapkan 20 dinar emas dan 200 dirham perak, setara ${NISAB_EMAS_G} g emas dan ${NISAB_PERAK_G} g perak. Peraturan di Indonesia memakai emas. Sebagian ulama menganjurkan perak karena nilainya jauh lebih rendah sehingga lebih banyak orang berzakat.` },
+      a: `Hadis menetapkan 20 dinar emas dan 200 dirham perak, setara ${NISAB_EMAS_G} g emas dan ${NISAB_PERAK_G} g perak. Peraturan di Indonesia memakai emas. Nisab perak nilainya jauh lebih rendah, jadi dengan patokan perak lebih banyak harta yang terhitung wajib zakat.` },
   ],
   perdagangan: [
     { q: 'Bagaimana cara menghitung zakat perdagangan?',

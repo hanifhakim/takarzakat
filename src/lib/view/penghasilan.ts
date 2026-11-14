@@ -34,7 +34,7 @@ export function bandingkan(s: StatePenghasilan, a: Acuan): string {
       { v: 'baznas', t: 'BAZNAS · bruto', nilai: b.wajib ? rupiah(b.zakat) : 'Belum wajib', sub: `Nisab ${rupiah(b.nisab)}` },
       { v: 'netto', t: 'Bersih · emas 24K', nilai: n.wajib ? rupiah(n.zakat) : 'Belum wajib', sub: `Nisab ${rupiah(n.nisab)}` },
     ],
-    tautan: '<a class="jumhur" href="/zakat-simpanan-emas">Mengikuti pendapat jumhur empat mazhab? Gaji yang tersimpan dizakati sebagai simpanan setelah setahun →</a>',
+    tautan: '<a class="jumhur" href="/zakat-simpanan-emas">Menurut jumhur ulama empat mazhab, gaji tidak dizakati saat diterima. Sisa yang tersimpan dihitung sebagai simpanan setelah setahun →</a>',
   });
 }
 

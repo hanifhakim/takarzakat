@@ -12,13 +12,13 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
 ---
 <Base
   title="TakarZakat — Kalkulator Zakat Penghasilan, Emas, Fitrah 2026"
-  description="Hitung zakat penghasilan, simpanan & emas, perdagangan, pertanian, dan fitrah. Lengkap dengan dalil dan perbedaan pendapat. Privat, dihitung di perangkatmu."
+  description="Kalkulator zakat penghasilan, simpanan dan emas, perdagangan, pertanian, dan fitrah, dengan rumus, dalil, dan perbedaan pendapat ulama. Gratis dan tanpa iklan."
   jsonld={jsonld}
 >
   <section class="home">
     <div class="left">
-      <h1>Hitung zakatmu, lengkap dengan dasarnya.</h1>
-      <p class="lede">Rumus terbuka, dalil dan perbedaan pendapat ditampilkan apa adanya. Kamu yang memutuskan.</p>
+      <h1>Hitung zakatmu dan lihat dasarnya.</h1>
+      <p class="lede">Setiap hasil disertai rumus, ayat dan hadis yang jadi dasarnya, dan pendapat ulama yang berbeda bila ada.</p>
       <span class="privacy"><i></i>Privat: semua dihitung di perangkatmu</span>
       <p class="how"><a href="/metodologi">Cara kerja &amp; sumber angka →</a></p>
     </div>
@@ -36,7 +36,8 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
         ))}
       </ul>
       <div class="acuan">
-        <h2>Harga acuan · <span id="hSumber">bawaan {tgl}</span></h2>
+        <h2>Acuan nisab</h2>
+        <p class="src" id="hSumber">bawaan {tgl}</p>
         <dl>
           <dt>Emas 24K dunia / gram</dt><dd class="num" id="hEmas">{rupiah(ACUAN.emas24)}</dd>
           <dt>Nisab emas ({NISAB_EMAS_G} g)</dt><dd class="num" id="hNisab">{rupiah(NISAB_EMAS_G * ACUAN.emas24)}</dd>
@@ -81,6 +82,7 @@ const tgl = new Date(ACUAN.tanggal).toLocaleDateString('id-ID', { day: 'numeric'
   .ktime { grid-row: 1 / span 2; grid-column: 2; font-size: 12px; color: var(--muted); border: 1px solid var(--line); padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
   .kind svg { grid-row: 1 / span 2; grid-column: 3; color: var(--faint); }
   .acuan { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .acuan .src { margin: -6px 0 10px; font-size: 13px; color: var(--muted); }
   .acuan h2 { margin: 0 0 10px; font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: .02em; text-transform: uppercase; }
   .acuan dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-size: 14px; }
   .acuan dt { color: var(--muted); }
