@@ -1,21 +1,21 @@
 {
-  "diperbarui": "2026-11-14",
+  "diperbarui": "2026-11-16",
   "emas24": {
-    "nilai": 2280429,
+    "nilai": 2261746,
     "satuan": "Rp/gram",
     "dasar": "Harga emas dunia (spot) 24K: USD/troy oz × kurs USD/IDR ÷ 31,1035",
-    "sumber": "gold-api.com (XAU 3.887,60 USD/oz) × Frankfurter/ECB (18.245)",
+    "sumber": "gold-api.com (XAU 3.855,75 USD/oz) × Frankfurter/ECB (18.245)",
     "url": "https://api.gold-api.com/price/XAU",
-    "tanggal": "2026-11-14",
+    "tanggal": "2026-11-16",
     "catatan": "Cadangan bila /api/harga gagal. Di situs, angka ini diganti harga live."
   },
   "perak": {
-    "nilai": 28538,
+    "nilai": 27791,
     "satuan": "Rp/gram",
     "dasar": "Harga perak dunia (spot)",
-    "sumber": "gold-api.com (XAG 48,65 USD/oz) × Frankfurter/ECB (18.245)",
+    "sumber": "gold-api.com (XAG 47,38 USD/oz) × Frankfurter/ECB (18.245)",
     "url": "https://api.gold-api.com/price/XAG",
-    "tanggal": "2026-11-14"
+    "tanggal": "2026-11-16"
   },
   "emasAntam": {
     "nilai": 2509000,
